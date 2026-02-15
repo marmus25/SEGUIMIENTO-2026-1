@@ -1,0 +1,4951 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a3a6e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Seguimiento">
+  <meta name="description" content="App de seguimiento rápido de estudiantes - Prof. Marcelo, Música">
+  <link rel="manifest" href="./manifest.json">
+  <title>Seguimiento Rápido — Música</title>
+
+  <!-- Google Fonts: DM Sans + Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* =============================================
+       CSS VARIABLES & RESET
+    ============================================= */
+    :root {
+      --oxford: #0f2044;
+      --navy: #1a3a6e;
+      --blue: #2557a7;
+      --sky: #3b82f6;
+      --accent: #60a5fa;
+      --teal: #0ea5e9;
+      --positive: #059669;
+      --positive-bg: #d1fae5;
+      --positive-border: #34d399;
+      --negative: #dc2626;
+      --negative-bg: #fee2e2;
+      --negative-border: #f87171;
+      --neutral: #f59e0b;
+      --neutral-bg: #fef3c7;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --surface-3: #f1f5f9;
+      --border: #e2e8f0;
+      --border-focus: #3b82f6;
+      --text-1: #0f172a;
+      --text-2: #475569;
+      --text-3: #94a3b8;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.07);
+      --shadow-lg: 0 20px 40px rgba(0,0,0,.14);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-lg: 20px;
+      --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --nav-h: 68px;
+      --header-h: 72px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: var(--font);
+      background: var(--surface-2);
+      color: var(--text-1);
+      min-height: 100%;
+      padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* =============================================
+       HEADER
+    ============================================= */
+    .app-header {
+      background: linear-gradient(135deg, var(--oxford) 0%, var(--navy) 60%, var(--blue) 100%);
+      color: white;
+      padding: 0 20px;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .header-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .header-subtitle {
+      font-size: 0.72rem;
+      opacity: 0.7;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .header-pill {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    /* =============================================
+       BOTTOM NAV (MOBILE-FIRST)
+    ============================================= */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-h);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: stretch;
+      z-index: 200;
+      padding-bottom: env(safe-area-inset-bottom);
+      box-shadow: 0 -4px 20px rgba(0,0,0,.08);
+    }
+
+    .nav-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 8px 4px;
+      position: relative;
+      transition: all 0.2s ease;
+      color: var(--text-3);
+      font-family: var(--font);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-tab:active { transform: scale(0.92); }
+
+    .nav-tab.active { color: var(--navy); }
+
+    .nav-tab.active .nav-icon::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 36px;
+      background: rgba(37,87,167,0.12);
+      border-radius: 10px;
+      z-index: -1;
+    }
+
+    .nav-icon {
+      font-size: 20px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 28px;
+    }
+
+    .nav-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-badge {
+      position: absolute;
+      top: -2px;
+      right: -4px;
+      background: var(--negative);
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 700;
+      min-width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 3px;
+      border: 2px solid white;
+    }
+
+    /* =============================================
+       PAGES (TAB CONTENT)
+    ============================================= */
+    .page { display: none; padding: 16px; animation: fadeIn 0.2s ease; }
+    .page.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* =============================================
+       CARDS
+    ============================================= */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-body { padding: 16px; }
+
+    /* =============================================
+       STAT CARDS
+    ============================================= */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--oxford) 0%, var(--navy) 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 70px;
+      height: 70px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+
+    .stat-card.green { background: linear-gradient(135deg, #065f46, #059669); }
+    .stat-card.amber { background: linear-gradient(135deg, #92400e, #d97706); }
+    .stat-card.red { background: linear-gradient(135deg, #991b1b, #dc2626); }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label { font-size: 0.72rem; opacity: 0.85; font-weight: 500; letter-spacing: 0.02em; }
+
+    /* =============================================
+       FORMS
+    ============================================= */
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-family: var(--font);
+      color: var(--text-1);
+      background: var(--surface);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
+
+    select.form-control {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 18px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .btn:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(37,87,167,0.3);
+    }
+    .btn-primary:hover { filter: brightness(1.08); }
+
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #065f46);
+      color: white;
+      box-shadow: 0 2px 8px rgba(5,150,105,0.3);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      color: white;
+      box-shadow: 0 2px 8px rgba(220,38,38,0.3);
+    }
+
+    .btn-amber {
+      background: linear-gradient(135deg, #d97706, #92400e);
+      color: white;
+      box-shadow: 0 2px 8px rgba(217,119,6,0.3);
+    }
+
+    .btn-ghost {
+      background: var(--surface-3);
+      color: var(--text-2);
+      border: 1.5px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--border); }
+
+    .btn-block { width: 100%; }
+    .btn-sm { padding: 7px 12px; font-size: 0.8rem; border-radius: 6px; }
+
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* =============================================
+       ALERT INFO
+    ============================================= */
+    .alert {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.83rem;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .alert-info { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .alert-success { background: var(--positive-bg); color: #065f46; border: 1px solid var(--positive-border); }
+    .alert-warn { background: var(--neutral-bg); color: #92400e; border: 1px solid #fcd34d; }
+
+    /* =============================================
+       SECTION HEADING
+    ============================================= */
+    .section-heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
+      margin: 20px 0 10px;
+    }
+
+    /* =============================================
+       CURSO ACCORDION (Students by course)
+    ============================================= */
+    .curso-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .curso-header-btn {
+      width: 100%;
+      padding: 14px 16px;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: var(--font);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .curso-header-btn:active { background: var(--surface-3); }
+
+    .curso-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .curso-badge {
+      background: var(--blue);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .curso-chevron {
+      color: var(--text-3);
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+    }
+
+    .curso-chevron.open { transform: rotate(180deg); }
+
+    .curso-body {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .curso-body.show { display: block; }
+
+    /* =============================================
+       STUDENT ROW
+    ============================================= */
+    .student-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--surface-3);
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .student-row:last-child { border-bottom: none; }
+    .student-row:active { background: var(--surface-3); }
+    .student-row.selected { background: #dbeafe; }
+
+    .student-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sky), var(--navy));
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .student-info { flex: 1; min-width: 0; }
+
+    .student-name-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .student-obs-count {
+      font-size: 0.7rem;
+      color: var(--text-3);
+      margin-top: 1px;
+    }
+
+    .student-obs-count.has-obs { color: var(--positive); font-weight: 600; }
+
+    .student-actions { display: flex; gap: 6px; }
+
+    .btn-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-icon:active { transform: scale(0.9); }
+    .btn-icon.blue { background: #dbeafe; color: var(--blue); }
+    .btn-icon.amber { background: var(--neutral-bg); color: #92400e; }
+    .btn-icon.red { background: var(--negative-bg); color: var(--negative); }
+
+    /* =============================================
+       SLIDE-IN PANEL (Student detail)
+    ============================================= */
+    .panel-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+      backdrop-filter: blur(2px);
+    }
+
+    .panel-overlay.show { opacity: 1; pointer-events: auto; }
+
+    .side-panel {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(420px, 100vw);
+      height: 100vh;
+      background: var(--surface);
+      z-index: 400;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .side-panel.show { right: 0; }
+
+    .panel-head {
+      background: linear-gradient(135deg, var(--oxford) 0%, var(--navy) 100%);
+      color: white;
+      padding: 20px 16px 16px;
+      flex-shrink: 0;
+    }
+
+    .panel-head-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .panel-nav-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-panel-nav {
+      flex: 1;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-family: var(--font);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+
+    .btn-panel-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-panel-nav:not(:disabled):active { background: rgba(255,255,255,0.25); }
+
+    .btn-close-panel {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .panel-student-name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .panel-student-curso {
+      font-size: 0.8rem;
+      opacity: 0.75;
+    }
+
+    .btn-edit-name-panel {
+      background: rgba(245,158,11,0.85);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-family: var(--font);
+      font-weight: 600;
+      margin-top: 8px;
+      transition: all 0.15s;
+    }
+
+    .panel-scroll { flex: 1; overflow-y: auto; padding: 16px; }
+
+    /* =============================================
+       QUICK TEXT BUTTONS (in panel)
+    ============================================= */
+    .quick-section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 8px;
+    }
+
+    .quick-section-title.pos { color: var(--positive); }
+    .quick-section-title.neg { color: var(--negative); }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .quick-btn {
+      border: 1.5px solid;
+      border-radius: 8px;
+      padding: 9px 10px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-family: var(--font);
+      font-weight: 500;
+      text-align: left;
+      transition: all 0.15s;
+      line-height: 1.3;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .quick-btn:active { transform: scale(0.95); }
+
+    .quick-btn.pos {
+      border-color: var(--positive-border);
+      background: var(--positive-bg);
+      color: #065f46;
+    }
+
+    .quick-btn.pos:hover { background: #a7f3d0; }
+
+    .quick-btn.neg {
+      border-color: var(--negative-border);
+      background: var(--negative-bg);
+      color: #991b1b;
+    }
+
+    .quick-btn.neg:hover { background: #fecaca; }
+
+    /* =============================================
+       OBSERVATIONS LIST
+    ============================================= */
+    .obs-item {
+      border-radius: 9px;
+      padding: 11px 12px;
+      margin-bottom: 8px;
+      border-left: 3px solid;
+      position: relative;
+    }
+
+    .obs-item.pos { background: var(--positive-bg); border-left-color: var(--positive); }
+    .obs-item.neg { background: var(--negative-bg); border-left-color: var(--negative); }
+    .obs-item.neutral { background: var(--neutral-bg); border-left-color: var(--neutral); }
+
+    .obs-date {
+      font-size: 0.68rem;
+      color: var(--text-3);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .obs-text {
+      font-size: 0.83rem;
+      color: var(--text-1);
+      line-height: 1.4;
+    }
+
+    .obs-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    /* Edit mode for observations */
+    .obs-edit-area {
+      width: 100%;
+      padding: 8px;
+      border: 1.5px solid var(--border-focus);
+      border-radius: 6px;
+      font-size: 0.83rem;
+      font-family: var(--font);
+      resize: vertical;
+      min-height: 60px;
+      margin-top: 4px;
+    }
+
+    .obs-edit-area:focus { outline: none; }
+
+    /* =============================================
+       NOTIFICATION TOAST
+    ============================================= */
+    #toast {
+      position: fixed;
+      bottom: calc(var(--nav-h) + 12px + env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--oxford);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      white-space: nowrap;
+      box-shadow: var(--shadow-md);
+      pointer-events: none;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* =============================================
+       MODAL (for quick texts editor)
+    ============================================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 500;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal-sheet {
+      background: var(--surface);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 20px;
+      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 auto 16px;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Quick text items in modal */
+    .qtext-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1.5px solid;
+      margin-bottom: 7px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .qtext-item.pos { border-color: var(--positive-border); background: var(--positive-bg); }
+    .qtext-item.neg { border-color: var(--negative-border); background: var(--negative-bg); }
+    .qtext-item:hover { filter: brightness(0.95); }
+
+    .qtext-text { flex: 1; font-size: 0.85rem; color: var(--text-1); }
+
+    .qtext-edit-input {
+      flex: 1;
+      border: 1.5px solid var(--border-focus);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      font-family: var(--font);
+    }
+
+    .qtext-edit-input:focus { outline: none; }
+
+    /* =============================================
+       REPORT PREVIEW
+    ============================================= */
+    .report-box {
+      background: var(--surface-3);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      white-space: pre-wrap;
+      max-height: 320px;
+      overflow-y: auto;
+      color: var(--text-1);
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    /* =============================================
+       COURSE MANAGEMENT
+    ============================================= */
+    .curso-mgmt-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: var(--surface-3);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-2);
+    }
+
+    /* =============================================
+       EMPTY STATES
+    ============================================= */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-3);
+    }
+
+    .empty-state-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.5; }
+    .empty-state-text { font-size: 0.9rem; font-weight: 500; }
+    .empty-state-sub { font-size: 0.78rem; margin-top: 4px; }
+
+    /* =============================================
+       PAGE: INICIO (Dashboard)
+    ============================================= */
+    .welcome-card {
+      background: linear-gradient(135deg, var(--oxford) 0%, var(--navy) 60%, var(--blue) 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-card::after {
+      content: '🎵';
+      position: absolute;
+      right: -10px;
+      top: -10px;
+      font-size: 5rem;
+      opacity: 0.1;
+      transform: rotate(-15deg);
+    }
+
+    .welcome-card-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .welcome-card-sub { font-size: 0.8rem; opacity: 0.75; margin-bottom: 16px; }
+
+    .quick-action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .quick-action-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .quick-action-card:active { transform: scale(0.97); border-color: var(--blue); }
+
+    .quick-action-icon { font-size: 1.6rem; }
+
+    .quick-action-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+
+    .quick-action-sub { font-size: 0.7rem; color: var(--text-3); }
+
+    /* =============================================
+       INSTALL PROMPT BANNER
+    ============================================= */
+    #install-banner {
+      background: linear-gradient(135deg, #065f46, #059669);
+      color: white;
+      padding: 12px 16px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+    }
+
+    #install-banner.show { display: flex; }
+    #install-banner .ib-text { flex: 1; font-weight: 500; }
+    #install-banner .ib-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<!-- INSTALL BANNER -->
+<div id="install-banner">
+  <span class="ib-text">📲 Instala esta app en tu celular para usarla sin internet</span>
+  <button class="ib-btn" onclick="installApp()">Instalar</button>
+  <button class="ib-btn" style="background:transparent;border:none;font-size:1rem;" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+</div>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-brand">
+    <div class="header-icon">🎵</div>
+    <div>
+      <div class="header-title">Seguimiento</div>
+      <div class="header-subtitle">Prof. Marcelo · Música</div>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="header-pill">
+      <span>👥</span>
+      <span id="hdr-estudiantes">0</span>
+    </div>
+    <div class="header-pill">
+      <span>📝</span>
+      <span id="hdr-observaciones">0</span>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== PAGE: INICIO ==================== -->
+<div id="page-inicio" class="page active">
+  <div class="welcome-card">
+    <div class="welcome-card-title">¡Hola, Marcelo! 👋</div>
+    <div class="welcome-card-sub" id="fecha-hoy">Cargando fecha...</div>
+    <button class="btn btn-success btn-sm" onclick="irAEstudiantes()">
+      📋 Ver Estudiantes
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number" id="dash-total">0</div>
+      <div class="stat-label">Estudiantes</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-number" id="dash-hoy">0</div>
+      <div class="stat-label">Obs. hoy</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-number" id="dash-total-obs">0</div>
+      <div class="stat-label">Obs. totales</div>
+    </div>
+    <div class="stat-card" style="background:linear-gradient(135deg,#1e40af,#3b82f6);">
+      <div class="stat-number" id="dash-cursos">0</div>
+      <div class="stat-label">Cursos</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Acciones rápidas</div>
+  <div class="quick-action-grid">
+    <div class="quick-action-card" onclick="irAEstudiantes()">
+      <div class="quick-action-icon">👥</div>
+      <div class="quick-action-label">Ver Estudiantes</div>
+      <div class="quick-action-sub">Por curso</div>
+    </div>
+    <div class="quick-action-card" onclick="showPage('page-config')">
+      <div class="quick-action-icon">➕</div>
+      <div class="quick-action-label">Agregar Estudiante</div>
+      <div class="quick-action-sub">Registro nuevo</div>
+    </div>
+    <div class="quick-action-card" onclick="showPage('page-reportes')">
+      <div class="quick-action-icon">📊</div>
+      <div class="quick-action-label">Generar Reporte</div>
+      <div class="quick-action-sub">Exportar datos</div>
+    </div>
+    <div class="quick-action-card" onclick="exportarTodosDatos()">
+      <div class="quick-action-icon">💾</div>
+      <div class="quick-action-label">Respaldar Datos</div>
+      <div class="quick-action-sub">Exportar JSON</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Observaciones recientes</div>
+  <div class="card">
+    <div id="obs-recientes">
+      <div class="empty-state">
+        <div class="empty-state-icon">📝</div>
+        <div class="empty-state-text">Sin observaciones aún</div>
+        <div class="empty-state-sub">Selecciona un estudiante para comenzar</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE: ESTUDIANTES ==================== -->
+<div id="page-estudiantes" class="page">
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-body" style="padding:12px 14px;">
+      <div style="display:flex;gap:10px;align-items:center;">
+        <input type="text" class="form-control" id="buscar-estudiante" 
+               placeholder="🔍 Buscar estudiante..." 
+               oninput="filtrarEstudiantes(this.value)"
+               style="flex:1;margin:0;">
+        <select class="form-control" id="filtro-curso" onchange="filtrarEstudiantes()" 
+                style="width:auto;flex-shrink:0;margin:0;font-size:0.8rem;padding:11px 28px 11px 10px;">
+          <option value="">Todos</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:12px;">
+    <button class="btn btn-ghost btn-sm" id="btn-vista-cursos" onclick="setVista('cursos')" style="flex:1;">📚 Por Cursos</button>
+    <button class="btn btn-ghost btn-sm" id="btn-vista-lista" onclick="setVista('lista')" style="flex:1;">📋 Lista</button>
+  </div>
+
+  <div id="vista-cursos"></div>
+  <div id="vista-lista" style="display:none;"></div>
+</div>
+
+<!-- ==================== PAGE: CONFIGURACIÓN ==================== -->
+<div id="page-config" class="page">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📚 Cargar Estudiantes</div>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <span class="alert-icon">ℹ️</span>
+        <div>Esta app incluye <strong>464 estudiantes</strong> precargados de 2do a 6to de Secundaria.</div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-success" onclick="cargarEstudiantesManual()">⬇️ Cargar los 464</button>
+        <button class="btn btn-danger" onclick="borrarTodosLosDatos()">🗑️ Borrar Todo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">➕ Nuevo Estudiante</div>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label class="form-label">Nombre completo</label>
+        <input type="text" class="form-control" id="nombreEstudiante" placeholder="Ej: García Pérez Juan Carlos">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Curso</label>
+        <select class="form-control" id="cursoEstudiante"></select>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="agregarEstudiante()">➕ Agregar Estudiante</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🏫 Gestionar Cursos</div>
+    </div>
+    <div class="card-body">
+      <div class="form-group" style="display:flex;gap:8px;">
+        <input type="text" class="form-control" id="nuevoCurso" placeholder="Ej: 1ro A" style="flex:1;margin:0;">
+        <button class="btn btn-success btn-sm" onclick="agregarCurso()">➕</button>
+      </div>
+      <div id="listaCursos"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">✏️ Textos Rápidos</div>
+      <button class="btn btn-ghost btn-sm" onclick="abrirModalTextos()">Editar</button>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info" style="margin-bottom:0;">
+        <span class="alert-icon">💡</span>
+        <div>Personaliza los botones de observación rápida que aparecen al evaluar a cada estudiante.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">💾 Respaldo de Datos</div>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-warn" style="margin-bottom:14px;">
+        <span class="alert-icon">⚠️</span>
+        <div>Exporta regularmente y sube a Google Drive para no perder datos.</div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-success" onclick="exportarTodosDatos()">📤 Exportar</button>
+        <button class="btn btn-primary" onclick="document.getElementById('importarArchivo').click()">📥 Importar</button>
+      </div>
+      <input type="file" id="importarArchivo" accept=".json" style="display:none;" onchange="importarDatos(event)">
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== PAGE: REPORTES ==================== -->
+<div id="page-reportes" class="page">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number" id="rpt-total-obs">0</div>
+      <div class="stat-label">Observaciones totales</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-number" id="rpt-hoy">0</div>
+      <div class="stat-label">De hoy</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📊 Generar Reporte</div>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label class="form-label">Tipo de reporte</label>
+        <select class="form-control" id="tipoReporte" onchange="toggleCursoReporte()">
+          <option value="hoy">Observaciones de Hoy</option>
+          <option value="semanal">Reporte Semanal</option>
+          <option value="completo">Reporte Completo</option>
+          <option value="curso">Por Curso</option>
+        </select>
+      </div>
+      <div class="form-group" id="cursoReporteDiv" style="display:none;">
+        <label class="form-label">Curso</label>
+        <select class="form-control" id="cursoReporte"></select>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="generarReporte()">📄 Generar</button>
+      <div id="reportePreview"></div>
+      <div class="btn-group" id="exportButtons" style="display:none;margin-top:10px;">
+        <button class="btn btn-ghost" onclick="copiarReporte()">📋 Copiar</button>
+        <button class="btn btn-amber" onclick="descargarReporte()">💾 Descargar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== BOTTOM NAV ==================== -->
+<nav class="bottom-nav">
+  <button class="nav-tab active" id="nav-inicio" onclick="showPage('page-inicio')">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-label">Inicio</div>
+  </button>
+  <button class="nav-tab" id="nav-estudiantes" onclick="showPage('page-estudiantes')">
+    <div class="nav-icon">
+      👥
+      <span class="nav-badge" id="nav-badge" style="display:none;">!</span>
+    </div>
+    <div class="nav-label">Estudiantes</div>
+  </button>
+  <button class="nav-tab" id="nav-config" onclick="showPage('page-config')">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">Config.</div>
+  </button>
+  <button class="nav-tab" id="nav-reportes" onclick="showPage('page-reportes')">
+    <div class="nav-icon">📊</div>
+    <div class="nav-label">Reportes</div>
+  </button>
+</nav>
+
+<!-- ==================== PANEL LATERAL (Slide-in) ==================== -->
+<div class="panel-overlay" id="panelOverlay" onclick="cerrarPanel()"></div>
+<div class="side-panel" id="sidePanel">
+  <div class="panel-head">
+    <div class="panel-head-top">
+      <div style="flex:1;">
+        <div class="panel-student-name" id="panelNombre"></div>
+        <div class="panel-student-curso" id="panelCurso"></div>
+      </div>
+      <button class="btn-close-panel" onclick="cerrarPanel()">✕</button>
+    </div>
+    <div class="panel-nav-row">
+      <button class="btn-panel-nav" id="btnPrev" onclick="navegarEstudiante(-1)">◀ Anterior</button>
+      <button class="btn-panel-nav" id="btnNext" onclick="navegarEstudiante(1)">Siguiente ▶</button>
+    </div>
+    <button class="btn-edit-name-panel" onclick="editarNombrePanel()">✏️ Editar nombre</button>
+  </div>
+  <div class="panel-scroll">
+    <!-- Quick texts will be loaded here -->
+    <div id="panelTextosPos"></div>
+    <div id="panelTextosNeg"></div>
+
+    <!-- Observation textarea -->
+    <div style="margin-bottom:16px;">
+      <div class="quick-section-title" style="color:var(--navy);margin-bottom:8px;">📝 Observación personalizada</div>
+      <textarea class="form-control" id="obsPersonalizada" rows="2" 
+                placeholder="Escribe una observación libre..." 
+                style="resize:vertical;"></textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;">
+        <button class="btn btn-success btn-sm" onclick="agregarObsPersonalizada('positive')">✅ Positiva</button>
+        <button class="btn btn-danger btn-sm" onclick="agregarObsPersonalizada('negative')">⚠️ Negativa</button>
+        <button class="btn btn-ghost btn-sm" onclick="agregarObsPersonalizada('neutral')">📋 Neutral</button>
+      </div>
+    </div>
+
+    <div class="quick-section-title" style="color:var(--text-2);margin-bottom:8px;">📋 Historial</div>
+    <div id="panelObservaciones"></div>
+  </div>
+</div>
+
+<!-- ==================== MODAL TEXTOS RÁPIDOS ==================== -->
+<div class="modal-overlay" id="modalTextos">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">
+      <span>📝 Textos Rápidos</span>
+      <button class="btn btn-ghost btn-sm" onclick="cerrarModalTextos()">✕</button>
+    </div>
+
+    <div class="alert alert-info" style="margin-bottom:14px;">
+      <span class="alert-icon">💡</span>
+      <div>Toca un texto para editarlo. Usa 🗑️ para eliminarlo.</div>
+    </div>
+
+    <div class="section-heading" style="color:var(--positive);">✨ Textos Positivos</div>
+    <div id="listaTextosPositivos" style="margin-bottom:12px;"></div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      <input type="text" class="form-control" id="nuevoTextoPositivo" placeholder="Nuevo texto positivo..." style="flex:1;margin:0;">
+      <button class="btn btn-success btn-sm" onclick="agregarTextoPersonalizado('positive')">➕</button>
+    </div>
+
+    <div class="section-heading" style="color:var(--negative);">⚠️ Textos de Mejora</div>
+    <div id="listaTextosNegativos" style="margin-bottom:12px;"></div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      <input type="text" class="form-control" id="nuevoTextoNegativo" placeholder="Nuevo texto de mejora..." style="flex:1;margin:0;">
+      <button class="btn btn-danger btn-sm" onclick="agregarTextoPersonalizado('negative')">➕</button>
+    </div>
+
+    <div class="btn-group" style="position:sticky;bottom:0;background:white;padding-top:12px;border-top:1px solid var(--border);">
+      <button class="btn btn-amber" onclick="restaurarTextosDefecto()">🔄 Restaurar</button>
+      <button class="btn btn-primary" onclick="cerrarModalTextos()">✓ Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+
+<script>
+// ============================================================
+// DATOS PRECARGADOS
+// ============================================================
+        const estudiantesPrecargados = [
+  {
+    "id": 1,
+    "nombre": "Rojas Cristofher  Jheferson",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Albares Mendoza Alexis",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "nombre": "Albares Mendoza William Denis",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "nombre": "Caballero Ramallo Maite Nataly",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "nombre": "Calderon Garcia William Andrey",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "nombre": "Calle Cruz Nicolas Ariel",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "nombre": "Caller Ibaguari Edith",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "nombre": "Carrillo Mejia Itzel Alejandra",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 9,
+    "nombre": "Castro Peñafiel Nicol Jhamileth",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 10,
+    "nombre": "Choconi Ventura Neymar Jacob",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 11,
+    "nombre": "Claros Cari Nicolas Jhaziel",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 12,
+    "nombre": "Claros Mamani Sofia Ines",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 13,
+    "nombre": "Copa Mamani Thiago",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 14,
+    "nombre": "Cuarasi Mamani Rasiel Smith",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 15,
+    "nombre": "Delgadillo Colque Ryan Neymar",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 16,
+    "nombre": "Gonzales Chambi Nicolas Daniel",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 17,
+    "nombre": "Huanca Mamani Treysi Jhudith",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 18,
+    "nombre": "Jaillita Quispe Bryan Gadiel",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 19,
+    "nombre": "Llampa Fernandez Elioth Gael",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 20,
+    "nombre": "Mamani Zuñiga Fernanda",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 21,
+    "nombre": "Ortuste Orellana Luciana Avril",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 22,
+    "nombre": "Paredes Quisbert Alexia Constanza",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 23,
+    "nombre": "Parra Garron Alba Madelen",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 24,
+    "nombre": "Parrado Bustamante Santiago",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 25,
+    "nombre": "Pereyra Hosse Ghi Jose",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 26,
+    "nombre": "Pinto Rojas Andres Mateo",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 27,
+    "nombre": "Prada Poma Abigail",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 28,
+    "nombre": "Puña Valencia Antonio Gabriel",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 29,
+    "nombre": "Quispe Mariño Jhack Milan",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 30,
+    "nombre": "Riera Goytia Megan Fernanda",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 31,
+    "nombre": "Rojas Bustamante Camila",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 32,
+    "nombre": "Romero Canedo Leandro Alejandro",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 33,
+    "nombre": "Romero Ramos Luis Adrian",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 34,
+    "nombre": "Romero Salazar Saul Jheremy",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 35,
+    "nombre": "Torrico Crespo Sebastian",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 36,
+    "nombre": "Veizaga Solis Ainhoa Victoria",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 37,
+    "nombre": "Agne Cuiza Adrian Mauricio",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 38,
+    "nombre": "Aguilar Morales Sara Belen",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 39,
+    "nombre": "Alba Alvestegui Jhoana Ivette",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 40,
+    "nombre": "Aramayo Chinchilla Santiago",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 41,
+    "nombre": "Argana Soliz Lucas Angel",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 42,
+    "nombre": "Ayala Crespo Santiago Aaron",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 43,
+    "nombre": "Castellon Mamani Tamaya",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 44,
+    "nombre": "Castellon Gonzales Demian Benjamin",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 45,
+    "nombre": "Claure Garcia Wanner",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 46,
+    "nombre": "Clemente Martines Jhoselyn Mayda",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 47,
+    "nombre": "Contreras Gonzales Ian",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 48,
+    "nombre": "Fernandez Flores Daniel Jose",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 49,
+    "nombre": "Gonzales Coria Emily Ariana",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 50,
+    "nombre": "Gutierrez Alegre Favio Andre",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 51,
+    "nombre": "Gutierrez Gonzalo Liz Nicol",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 52,
+    "nombre": "Lazarte Camacho Jhon Edwar",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 53,
+    "nombre": "Loaiza Velasco Jhojan Fabioi",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 54,
+    "nombre": "Lopez Arispe Daniel",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 55,
+    "nombre": "Mamani Sejas Tatiana Britani",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 56,
+    "nombre": "Meriles Tola Michelle Amaya",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 57,
+    "nombre": "Miranda Ponce Fernando  Caleb",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 58,
+    "nombre": "Pacheco Velasco Alex Antoni",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 59,
+    "nombre": "Pereira Loza Jose Antonio",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 60,
+    "nombre": "Pozo Rojas Juan David",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 61,
+    "nombre": "Ramirez Castro Skaylor Tifanny",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 62,
+    "nombre": "Ramirez Quisbert Mikeyla",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 63,
+    "nombre": "Ricaldez Sandoval Brissa Selene",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 64,
+    "nombre": "Siles Quispe Camila Naomi",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 65,
+    "nombre": "Vargas Quintana Swami Ian",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 66,
+    "nombre": "Vargas Rodriguez Agustin Elian",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 67,
+    "nombre": "Villarroel Camaque Thais",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 68,
+    "nombre": "Zeballos Miranda Nicole Ingrith",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 69,
+    "nombre": "Zurita Ferrufino Jose Marvin",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 70,
+    "nombre": "Duran Colque Jose Miguel",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 71,
+    "nombre": "Gaspar Samuel",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 72,
+    "nombre": "Alban Monzon Geraldine Madyson",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 73,
+    "nombre": "Albares Zurita Rodrigo",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 74,
+    "nombre": "Challa Mendoza Adriana Nicol",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 75,
+    "nombre": "Condori Berbetty Jazmin Sarai",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 76,
+    "nombre": "Cuba Olmedo Alexis Leonardo",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 77,
+    "nombre": "Cusi Veisaga Josue Isaias",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 78,
+    "nombre": "Equise Cordova Harold Luis",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 79,
+    "nombre": "Fernandez Marpartida Pablo Maximiliano",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 80,
+    "nombre": "Flores Alanes Diego David",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 81,
+    "nombre": "Flores Paco Snayder",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 82,
+    "nombre": "Franco Vega Thiago Rafael",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 83,
+    "nombre": "Guarachi Fernandez Haziel Joel",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 84,
+    "nombre": "Gutierrez Canaviri Amilkar Mateo",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 85,
+    "nombre": "Luizaga Avila Benjamin Ramiro",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 86,
+    "nombre": "Mamani Morales Fabiola",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 87,
+    "nombre": "Mamani Silva Douglas Adan",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 88,
+    "nombre": "Pacari Mamani Andre Gilmar",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 89,
+    "nombre": "Quispe Condori Lioma Libertad",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 90,
+    "nombre": "Quispe Mariño Nyck Dylan",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 91,
+    "nombre": "Ramirez Arze Natanael",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 92,
+    "nombre": "Ricaldez Paredes Jhakelin Andrea",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 93,
+    "nombre": "Rodriguez Gutierrez Samuel Erick",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 94,
+    "nombre": "Romero Flores Juan Miguel",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 95,
+    "nombre": "Sanchez Marzana Sheyla Britani",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 96,
+    "nombre": "Solis Cuarasi Shadol Nicole",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 97,
+    "nombre": "Soliz Yave Erika",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 98,
+    "nombre": "Ticona Surumi Fernanda",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 99,
+    "nombre": "Tordoya Quiroga Karim Francesc",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 100,
+    "nombre": "Uribe Villanueva Enrique Mtias",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 101,
+    "nombre": "Yucra Ticona Zarlet Belen",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 102,
+    "nombre": "Mejia Valencia Benjamin",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 103,
+    "nombre": "Albares Zurita Juan Diego",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 104,
+    "nombre": "Caero Delgado Matias Diego",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 105,
+    "nombre": "Cespedes Guarena Jose Carlo",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 106,
+    "nombre": "Chile Alvarez Dylan",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 107,
+    "nombre": "Choque Galvez Jimena Eliana",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 108,
+    "nombre": "Claure Aranibar Mayara Jhasmin",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 109,
+    "nombre": "Coca Loza Keathon Leandro",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 110,
+    "nombre": "Condori Cepeda Aaron Alexander",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 111,
+    "nombre": "Coria Jimenez Rosario Esmeralda",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 112,
+    "nombre": "Phuru Maire Camila Jazmin",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 113,
+    "nombre": "Delgadillo Colque Ademar Samir",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 114,
+    "nombre": "Fernandez Flores Matias Carlos Andres",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 115,
+    "nombre": "Gonzales Torrico Jhoselin Danna",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 116,
+    "nombre": "Ledezma Miranda Arabel Dagmar",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 117,
+    "nombre": "Limachi Canaviri Jaci Isabel",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 118,
+    "nombre": "Luna Arias Samuel",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 119,
+    "nombre": "Mamani Soliz Deymar Jonas",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 120,
+    "nombre": "Melendres Montaño Angela Isabel",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 121,
+    "nombre": "Morales Taboada Selena Katherin",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 122,
+    "nombre": "Padilla Rojas Mikeyla Kimberly",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 123,
+    "nombre": "Patiño Chavez Diego Antonio",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 124,
+    "nombre": "Patiño Cossio Valentina",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 125,
+    "nombre": "Pereyra Hosse Juan Santiago",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 126,
+    "nombre": "Poma Villarpando Jair",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 127,
+    "nombre": "Poquechoque Huaytari Andre Yihad",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 128,
+    "nombre": "Ramirez Claure Leslie Roxana",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 129,
+    "nombre": "Rivero Acero Edgar Alan",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 130,
+    "nombre": "Rodriguez Mamani Kevin",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 131,
+    "nombre": "Rojas Bustamante Rosario",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 132,
+    "nombre": "Romero Ramos Melisa",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 133,
+    "nombre": "Romero Taborga Alan Luis",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 134,
+    "nombre": "Rueda Rodriguez Lilian Nathali",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 135,
+    "nombre": "Ugarte Choque Jessica",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 136,
+    "nombre": "Valda Alvarez Jose Ramiro",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 137,
+    "nombre": "Villca Bernabel Ever Alexander",
+    "curso": "3Ro A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 138,
+    "nombre": "Canaviri Angel Leonardo",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 139,
+    "nombre": "Aguilar Colque Luz Mariana",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 140,
+    "nombre": "Aguilar Moya Camila Nicol",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 141,
+    "nombre": "Almanza Huanca Emerson",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 142,
+    "nombre": "Andia Apaza Jheremy Dilan",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 143,
+    "nombre": "Ayala Crespo Andres Ivan",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 144,
+    "nombre": "Barroso Romero Lucas",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 145,
+    "nombre": "Canaviri Vargas Sharon Melany",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 146,
+    "nombre": "Carballo Bustamante Jhoselyn Belen",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 147,
+    "nombre": "Franco Vega Alexandra Nieves",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 148,
+    "nombre": "Garcia Gomez Dilan Neimar",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 149,
+    "nombre": "Gonzales Estrada Ivana Madai",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 150,
+    "nombre": "Guzman Zepita Andruw",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 151,
+    "nombre": "Herbas Atahuichi Erick Oliver",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 152,
+    "nombre": "Herrera Vidaurre Roberto",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 153,
+    "nombre": "Ichuta Fernandez Reiner Jose",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 154,
+    "nombre": "James Mareño Sebastian",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 155,
+    "nombre": "Lizarazu Mamani Ulises Samuel",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 156,
+    "nombre": "Lopez Mamani Diana",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 157,
+    "nombre": "Luizaga Vega Leonardo Sebastian",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 158,
+    "nombre": "Mamani Silva Brisa Indira",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 159,
+    "nombre": "Mendoza Pizaya Abdiaz Samuel",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 160,
+    "nombre": "Mendoza Condori Paola",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 161,
+    "nombre": "Padilla Marca Jhenifer Fernanda",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 162,
+    "nombre": "Perez Barrientos Elias",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 163,
+    "nombre": "Ramos Cepeda Ian Cristopher",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 164,
+    "nombre": "Reynoso Herbas Camila",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 165,
+    "nombre": "Riera Goytia Brizeida Vera",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 166,
+    "nombre": "Salinas Charupa Ivonne Yomara",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 167,
+    "nombre": "Soliz Quiroga Mateo Leonel",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 168,
+    "nombre": "Vargas Vasquez Andrea Natalia",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 169,
+    "nombre": "Veizaga Guzman Kendrick Jhadyel",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 170,
+    "nombre": "Vela Rivera Brihana Brenda",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 171,
+    "nombre": "Yave Rollano Charle Felix",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 172,
+    "nombre": "Camacho Mamani Angie Katlin",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 173,
+    "nombre": "Choque Tito Neymar Cristian",
+    "curso": "3Ro B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 174,
+    "nombre": "Almendras Melgarejo Natalie Samanta",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 175,
+    "nombre": "Angulo Cerezo Dailin Areli",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 176,
+    "nombre": "Angulo Mamani Jhon Elmer",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 177,
+    "nombre": "Arauco Sardan Darlin Melody",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 178,
+    "nombre": "Barrenechea Salazar Luis Fabricio",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 179,
+    "nombre": "Canaviri Astete Nicolas",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 180,
+    "nombre": "Chavez Condori Ayelen Alwa",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 181,
+    "nombre": "Choque Cabrera Victor",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 182,
+    "nombre": "Choque Condori Alison Massiel",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 183,
+    "nombre": "Choque Gutierrez Xiomara Rubi",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 184,
+    "nombre": "Corpus Hidalgo Alejandra",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 185,
+    "nombre": "Gallardo Mendoza Camila Carla",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 186,
+    "nombre": "Herbas Poma Darlin",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 187,
+    "nombre": "Jaldin Villarroel Eiden Vladimir",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 188,
+    "nombre": "Marce Yave Carla",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 189,
+    "nombre": "Morales Caricari Sarahi Brenely",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 190,
+    "nombre": "Morales Flores Rafael Aaron",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 191,
+    "nombre": "Orellana Santillan Valeria Fernanda",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 192,
+    "nombre": "Orellana Villarroel Leonardo Emmeth",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 193,
+    "nombre": "Paredes Cossio Alejandro Gabriel",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 194,
+    "nombre": "Peredo Orihuela Andrea Heydi",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 195,
+    "nombre": "Poquechoque Huaytari Anderson Yazid",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 196,
+    "nombre": "Quiroga Sejas Marco Augusto",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 197,
+    "nombre": "Ramos Fique Alex",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 198,
+    "nombre": "Sanchez Romero Anahi Brenda",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 199,
+    "nombre": "Siles Quispe Mateo Eduardo",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 200,
+    "nombre": "Soliz Quiroga Sai Sareth",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 201,
+    "nombre": "Soria Escobar Diego Armando",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 202,
+    "nombre": "Toroya Yave Neymar",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 203,
+    "nombre": "Vasquez Sanchez Axcel Adrian",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 204,
+    "nombre": "Velarde Fernandez Miguel Angel",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 205,
+    "nombre": "Zuleta Lopez Luciana Emily",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 206,
+    "nombre": "Mamani Reyes Darlin Gisel",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 207,
+    "nombre": "Sosa Pinto Alejandro",
+    "curso": "3Ro C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 208,
+    "nombre": "Perez Fatima Odaliz",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 209,
+    "nombre": "Aliendre Condori Jose Carlos",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 210,
+    "nombre": "Almanza Huanca Adriely",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 211,
+    "nombre": "Casa Mamani Yamile",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 212,
+    "nombre": "Cazorla Rivas Luis Fernando",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 213,
+    "nombre": "Chambi Pacheco Tatiana",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 214,
+    "nombre": "Choque Cruz Rihanna Jankarla",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 215,
+    "nombre": "Chumbe Geronimo Daniela",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 216,
+    "nombre": "Claros Fernandez Brigith Estefany",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 217,
+    "nombre": "Condori Fernandez Adalid Diego",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 218,
+    "nombre": "Condori Gallegos Kelvin Andres",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 219,
+    "nombre": "Cutipa Tito Daysi",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 220,
+    "nombre": "Gutierrez Canaviri Ana Gabriela",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 221,
+    "nombre": "Juri Juscusiri Xadid",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 222,
+    "nombre": "Lazo Alvarez Keity Sherlyn",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 223,
+    "nombre": "Maire Alvares Alejandra Lucero",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 224,
+    "nombre": "Mareño Sosa Alexis Manuel",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 225,
+    "nombre": "Pacheco Velasco Nayeli Helen",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 226,
+    "nombre": "Paredes Yauri Peython Rianna",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 227,
+    "nombre": "Parra Garron Jhonny Alejandro",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 228,
+    "nombre": "Quispe Aguilar Anahi Melani",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 229,
+    "nombre": "Rivero Acero Jade Jasmin",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 230,
+    "nombre": "Rocha Vergara Melany Rosse",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 231,
+    "nombre": "Soliz Pedrazas Maic Armando",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 232,
+    "nombre": "Soto Taquichiri Edward Anderson",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 233,
+    "nombre": "Taboada Poma Fabian",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 234,
+    "nombre": "Vela Maraza Fatima Abril",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 235,
+    "nombre": "Velarde Montemayor Matias Garet",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 236,
+    "nombre": "Yupanqui Ramos Emily Araceli",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 237,
+    "nombre": "Zenteno Alanez Adhemar Dylan",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 238,
+    "nombre": "Rios Morales Belinda",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 239,
+    "nombre": "Amonzabel Flores Camila Estefani",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 240,
+    "nombre": "Arispe Aguilar Helen",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 241,
+    "nombre": "Barrientos Mamani Brisa Betsabe",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 242,
+    "nombre": "Bojorges Carvajal Nataly Zaleth",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 243,
+    "nombre": "Caballero Ramallo Mateo Alejandro",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 244,
+    "nombre": "Cabrera Laguna Fernanda Alejandra",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 245,
+    "nombre": "Choque Galvez Abiel",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 246,
+    "nombre": "Condori Siles Samiel Antony",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 247,
+    "nombre": "Garcia Cuarasi Jhon Jairo",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 248,
+    "nombre": "Garcia Villegas Sindel Desiree",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 249,
+    "nombre": "Geronimo Perez Karim Anthony",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 250,
+    "nombre": "Gonzales Rocha Ruth Adelaida",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 251,
+    "nombre": "Jaillita Revollo Limbert",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 252,
+    "nombre": "Jimenez Berrios Jhojam Leandro",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 253,
+    "nombre": "Limachi Canaviri Bruce Bryan",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 254,
+    "nombre": "Lizarazu Mamani Ariana Pilar",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 255,
+    "nombre": "Lora Acero Carlos Alfredo",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 256,
+    "nombre": "Marza Aguilar Anthony Jose",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 257,
+    "nombre": "Parrado Bustamante Mariana",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 258,
+    "nombre": "Pinto Rojas Nicolas Matias",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 259,
+    "nombre": "Ramirez Condori Jose Luis",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 260,
+    "nombre": "Ramirez Alaniz Gabriel",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 261,
+    "nombre": "Sajama Paco Ruth Maya",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 262,
+    "nombre": "Terrazas Capriles Anel Cecilia",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 263,
+    "nombre": "Toribio Teran Matias Cristian",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 264,
+    "nombre": "Ugarte Vidaurre Leonardo",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 265,
+    "nombre": "Vargas Jora Sofia",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 266,
+    "nombre": "Vasquez Cuba Katerine Jade",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 267,
+    "nombre": "Villamor Loras Alisson Fabiana",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 268,
+    "nombre": "Zuleta Antezana Harold Sebastian",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 269,
+    "nombre": "Zuleta Lopez Jeremy Aaron",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 270,
+    "nombre": "Aguilar Aguilar Brittany Anahi",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 271,
+    "nombre": "Alban Monzon Isaac Ignacio",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 272,
+    "nombre": "Alcocer Campos Melani Melisa",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 273,
+    "nombre": "Apaza Delgadillo Nathaniel Eliazer",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 274,
+    "nombre": "Cabrera Umaña Diana Alexa",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 275,
+    "nombre": "Calderon Manzel Aaron Neymar",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 276,
+    "nombre": "Camacho Zambrana Liz Andrea",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 277,
+    "nombre": "Camargo Peca Jhosstin Anthuan",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 278,
+    "nombre": "Carvajal Gabriel Heidy",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 279,
+    "nombre": "Claros Carreño Rocio Wanda",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 280,
+    "nombre": "Coyo Choque Alison Mayde",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 281,
+    "nombre": "Gonzales Coria Gabriela Isabel",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 282,
+    "nombre": "Guarachi Fernandez Ruben Gabriel",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 283,
+    "nombre": "Gutierrez Caceres Javier Limbert",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 284,
+    "nombre": "Huanca Cossio Jose David",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 285,
+    "nombre": "Huanca Mamani Thiago Fernando",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 286,
+    "nombre": "Huarachi Yucra Ruth Alejandra",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 287,
+    "nombre": "Lopez Gonzales Sarai",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 288,
+    "nombre": "Magne Zuñiga Anderson",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 289,
+    "nombre": "Orellana Montecinos Juan Roman",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 290,
+    "nombre": "Ortega Carvallo Matias Edwin",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 291,
+    "nombre": "Paniagua Guzman Luciana",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 292,
+    "nombre": "Peredo Pinto Santiago Jhunior",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 293,
+    "nombre": "Schmitter Ibaguari Tiago",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 294,
+    "nombre": "Ticona Tordoya Daniela",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 295,
+    "nombre": "Ticona Mallon Fabiola Isabel",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 296,
+    "nombre": "Toroya Yave Britney",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 297,
+    "nombre": "Ugarte Vidaurre Leonel",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 298,
+    "nombre": "Vargas Quintana Cristal Jazmin",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 299,
+    "nombre": "Villca Viza Paul Lizandro",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 300,
+    "nombre": "Agne Cuiza Nicolas Gabriel",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 301,
+    "nombre": "Aguilar Diaz Valerin",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 302,
+    "nombre": "Chavez Mariscal Josue Ezequiel",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 303,
+    "nombre": "Espinoza Delgado Derick Gabriel",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 304,
+    "nombre": "Garcia Totola Mariana Jhazmin",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 305,
+    "nombre": "Gomez Sosa Helsy Samuel",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 306,
+    "nombre": "Gutierrez Poma Katerin Alejandra",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 307,
+    "nombre": "Huanca Flores Benjamin Americo",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 308,
+    "nombre": "Ichuta Fernandez Jhon Franco",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 309,
+    "nombre": "Lazo Alvarez Jhulieth America",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 310,
+    "nombre": "Llaveta Rojas Antony",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 311,
+    "nombre": "Lopez Choque Wilson",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 312,
+    "nombre": "Mamani Huaygua Samuel",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 313,
+    "nombre": "Orellana Montecinos Jose Roman",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 314,
+    "nombre": "Pereira Loza Jose Ignacio",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 315,
+    "nombre": "Perez Vargas Marian Camila",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 316,
+    "nombre": "Puña Valencia Lucero Fernanda",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 317,
+    "nombre": "Quispe Aguilar Marco Antonio",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 318,
+    "nombre": "Rios Morales Neyza",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 319,
+    "nombre": "Risueño Yujra Rony Ayme",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 320,
+    "nombre": "Rojas Valdivia Derek David",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 321,
+    "nombre": "Sarabia Fernandez Marcos Gabriel",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 322,
+    "nombre": "Sarzusa Claros Vanessa",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 323,
+    "nombre": "Soto Ortiz Jhamil",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 324,
+    "nombre": "Susaño Flores Naike Rebeca",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 325,
+    "nombre": "Tapia Alanez Cesar Leonel",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 326,
+    "nombre": "Teran Iraipi Juan Adon",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 327,
+    "nombre": "Yujra Mamani Jhamil Santos",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 328,
+    "nombre": "Zapata Nogales Jhojan Santiago",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 329,
+    "nombre": "Aquino Azurduy Luis Fabian",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 330,
+    "nombre": "Arias Soto Jhann Nadal",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 331,
+    "nombre": "Blas Huarita Juan Jose",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 332,
+    "nombre": "Candia Maita Masiel Tiffany",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 333,
+    "nombre": "Choque Condori Kiommy Stefani",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 334,
+    "nombre": "Colque Choque Maciel Tobias",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 335,
+    "nombre": "Condori Berbetty Carlos Mateo",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 336,
+    "nombre": "Gutierrez Alegre Santiago Amilcar",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 337,
+    "nombre": "Ledezma Miranda Britani Megan",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 338,
+    "nombre": "Mamani Canqui Naim Andres",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 339,
+    "nombre": "Martinez Villarroel Mareck Neymar",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 340,
+    "nombre": "Mico Diaz Luis",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 341,
+    "nombre": "Moreno Meneses Jheison",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 342,
+    "nombre": "Orellana Villarroel Annais Andrea",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 343,
+    "nombre": "Ortuste Orellana Leonardo",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 344,
+    "nombre": "Paredes Sanabria Stefany Mariel",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 345,
+    "nombre": "Perez Lugarani Sander",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 346,
+    "nombre": "Quintanilla Ramirez Anthony Emanuel",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 347,
+    "nombre": "Quiroga Sejas Victoria Betenia",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 348,
+    "nombre": "Roca Ibaguari Fernanda",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 349,
+    "nombre": "Rodriguez Rodriguez Adriana",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 350,
+    "nombre": "Salinas Charupa Adriana Shelisa",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 351,
+    "nombre": "Sanchez Almanza Berenice Ayllen",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 352,
+    "nombre": "Siñaniz Almanza Fabio Alessandro",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 353,
+    "nombre": "Ustariz Chonono Alison",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 354,
+    "nombre": "Vasquez Choque Bond Jheimy",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 355,
+    "nombre": "Zubieta Zenteno Maria Juana",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 356,
+    "nombre": "Cuellar Leaños Johana",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 357,
+    "nombre": "Argana Soliz Luciana Monica",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 358,
+    "nombre": "Camacho Zambrana Deborah Belen",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 359,
+    "nombre": "Choque Mendoza Alvaro",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 360,
+    "nombre": "Chucamani Juyari Herlinda",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 361,
+    "nombre": "Claros Torres Nicolas Mateo",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 362,
+    "nombre": "Claure Aranibar Haziel Duzan",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 363,
+    "nombre": "Cruz Calvi Sara Rosario",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 364,
+    "nombre": "Delgado Laura Miley Alexandra",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 365,
+    "nombre": "Gonzales Estrada Adriel Anghelo",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 366,
+    "nombre": "Jarro Choque Vania Keisha",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 367,
+    "nombre": "Miranda Aguilar Jhael Jheyson",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 368,
+    "nombre": "Patiño Catalan Santiago Leonel",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 369,
+    "nombre": "Peredo Silva Santiago",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 370,
+    "nombre": "Poquechoque Choque Angheli Yumi",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 371,
+    "nombre": "Postigo Cornejo Aneth Ruby",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 372,
+    "nombre": "Quispe Rodriguez Jhon Franco",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 373,
+    "nombre": "Ramos Fique Oliver",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 374,
+    "nombre": "Romay Apaza Jheyson Cliver",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 375,
+    "nombre": "Romero Ramos Rebeca",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 376,
+    "nombre": "Romero Rondal Pablo Jose",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 377,
+    "nombre": "Sandoval Bazoalto Avril Asley",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 378,
+    "nombre": "Segovia Garcia Elioth",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 379,
+    "nombre": "Sullca Garcia Jhosep Jhadiel",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 380,
+    "nombre": "Torrico Mercado Dylan Brian",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 381,
+    "nombre": "Ugarte Vallejos Yassendy",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 382,
+    "nombre": "Vargas Jora Paula",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 383,
+    "nombre": "Zambrana Espinoza Eduardo Liam",
+    "curso": "5toc",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 384,
+    "nombre": "Rojas Fernanda Jazmin",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 385,
+    "nombre": "Aguilar Tito Kevin",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 386,
+    "nombre": "Chavez Fernandez Diego Israel",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 387,
+    "nombre": "Claure Garcia Daira",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 388,
+    "nombre": "Coca Loza Oliver Gael",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 389,
+    "nombre": "Condorcota Chucamani Elmer",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 390,
+    "nombre": "Copali Espinoza Osvaldo",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 391,
+    "nombre": "Cusicanqui Rada Leandro Mateo",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 392,
+    "nombre": "Hinojosa Chambi Fabricio Alejandro",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 393,
+    "nombre": "Mamani Huaygua Helen Dhana",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 394,
+    "nombre": "Martinez Villarroel Nelya Odaymis Gabriela",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 395,
+    "nombre": "Mendoza Condori Jhoselin Luz",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 396,
+    "nombre": "Molina Barrientos Nohelia Jerusalen",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 397,
+    "nombre": "Morales Flores Alain Nicolas",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 398,
+    "nombre": "Paniagua Guzman Luis Miguel",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 399,
+    "nombre": "Piedra Claros Amy Kateryn",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 400,
+    "nombre": "Ramirez Alaniz Daniel",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 401,
+    "nombre": "Ramos Cepeda Adriana",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 402,
+    "nombre": "Rios Morales Jhoselin",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 403,
+    "nombre": "Tapia Olivera Alejandro Omar",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 404,
+    "nombre": "Ticona Surumi Ruben",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 405,
+    "nombre": "Tola Solano Luis Mario",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 406,
+    "nombre": "Toribio Teran Adriana Anahi",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 407,
+    "nombre": "Vallejos Rosales Nareth",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 408,
+    "nombre": "Vargas Aguilar Herlan Abdiel",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 409,
+    "nombre": "Villca Vicente Victoria",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 410,
+    "nombre": "Argandoña Moye Katherine Michelle",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 411,
+    "nombre": "Benites Ojeda Nicolas Rolando",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 412,
+    "nombre": "Caceres Sandy Maiza",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 413,
+    "nombre": "Castro Sanchez John Michael",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 414,
+    "nombre": "Cespedes Olivera Brenda Belen",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 415,
+    "nombre": "Challa Mendoza Michel Alejandra",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 416,
+    "nombre": "Claros Torres Guillermo Jimmy",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 417,
+    "nombre": "Colque Bravo Antony Agustin",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 418,
+    "nombre": "Colque Rodriguez Jhonatan",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 419,
+    "nombre": "Condori Chinchilla Felix",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 420,
+    "nombre": "Cuaquira Pinto Jefferson Kevin",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 421,
+    "nombre": "Diaz Camacho Giorgia Valentina",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 422,
+    "nombre": "Guarachi Poma Jose Armando",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 423,
+    "nombre": "Gutierrez Gonzalo Marisol",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 424,
+    "nombre": "Julio Enriquez Luis Miguel",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 425,
+    "nombre": "Mamani Soliz Cristhian Mathias",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 426,
+    "nombre": "Marce Quimpe Fernando Javier",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 427,
+    "nombre": "Miranda Patzi Bryanna Sabrina",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 428,
+    "nombre": "Mita Lima Catrin Heliana",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 429,
+    "nombre": "Pacheco Velasco Nereida Nicol",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 430,
+    "nombre": "Quiroga Saavedra Camila",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 431,
+    "nombre": "Ramirez Claure Darleth",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 432,
+    "nombre": "Sanchez Vela Noemi Fernanda",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 433,
+    "nombre": "Sandagorda Montaño Guadalupe",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 434,
+    "nombre": "Tapia Alanez Brandon Kael",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 435,
+    "nombre": "Usieda Orihuela Sergio Israel",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 436,
+    "nombre": "Villarroel Añez Dulce Nissai",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 437,
+    "nombre": "Duran Quillca Darla Rebeca",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 438,
+    "nombre": "Aguilar Aguilar Alexander",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 439,
+    "nombre": "Angulo Mamani Luis Fernando",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 440,
+    "nombre": "Caceres Sandy Sara",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 441,
+    "nombre": "Catari Lizarazu Josue Octavio",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 442,
+    "nombre": "Chambi Pacheco Santiago",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 443,
+    "nombre": "Chambi Parisaca Anthony Eduardo",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 444,
+    "nombre": "Chavarria Arispe Jhasmin Andrea",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 445,
+    "nombre": "Chungara Baldiviezo Rafael",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 446,
+    "nombre": "Colque Choque Dianelis Anahi",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 447,
+    "nombre": "Condori Espejo Nahy",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 448,
+    "nombre": "Luna Chambi Jennifer",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 449,
+    "nombre": "Mamani Huaygua Abigail",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 450,
+    "nombre": "Mamani Ticona Ruth Alejandra",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 451,
+    "nombre": "Marca Corani Cristian",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 452,
+    "nombre": "Ortega Montaño Johan Christopher",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 453,
+    "nombre": "Quispe Hinojosa Jhon Deyvis",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 454,
+    "nombre": "Quispe Quispe Brenda Aracely",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 455,
+    "nombre": "Reynoso Herbas Nicol",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 456,
+    "nombre": "Teran Iraipi Jose Carlos",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 457,
+    "nombre": "Totola Puqui Leidy Solmayra",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 458,
+    "nombre": "Uluri Cori Genesis Esmeralda",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 459,
+    "nombre": "Valdiviezo Mamani Sebastian Jens",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 460,
+    "nombre": "Vela Maraza Noelia Mery",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 461,
+    "nombre": "Zuna Zeballos Elexander Fabian",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 462,
+    "nombre": "Fernandez Quinteros Emily Gisel",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 463,
+    "nombre": "Duran Quillca Darela Fernanda",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": 464,
+    "nombre": "Sajama Veizaga Angel Daniel",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+  }
+];
+
+const cursosPrecargados = [
+  "2do A",
+  "2do B",
+  "2do C",
+  "3ro A",
+  "3ro B",
+  "3ro C",
+  "4to A",
+  "4to B",
+  "4to C",
+  "5to A",
+  "5to B",
+  "5to C",
+  "6to A",
+  "6to B",
+  "6to C"
+];
+
+// ============================================================
+// APP STATE
+// ============================================================
+const estudiantesPrecargadosData = estudiantesPrecargados || [];
+const cursosPrecargadosData = cursosPrecargados || [];
+
+let estudiantes = JSON.parse(localStorage.getItem('estudiantes_simple')) || [];
+let observaciones = JSON.parse(localStorage.getItem('observaciones_simple')) || [];
+let cursos = JSON.parse(localStorage.getItem('cursos_simple')) || cursosPrecargadosData;
+let estudianteSeleccionado = null;
+let listaFiltrada = [];
+let vistaActual = 'cursos';
+let reporteGenerado = '';
+let deferredPrompt = null;
+let textoEditandose = null;
+
+const textosRapidosDefecto = {
+  positive: ['Gran participación','Completó todo el trabajo','Gran trabajo en grupo','Excelente actitud','Domina el instrumento','Excelente lectura musical'],
+  negative: ['Dormir en clase','No completar la tarea','Interrumpir la clase','Sin bloc de notas','Falta de respeto','Hablar en clase']
+};
+
+let textosRapidos = JSON.parse(localStorage.getItem('textos_rapidos')) || JSON.parse(JSON.stringify(textosRapidosDefecto));
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  const map = { 'page-inicio':'nav-inicio','page-estudiantes':'nav-estudiantes','page-config':'nav-config','page-reportes':'nav-reportes' };
+  if (map[pageId]) document.getElementById(map[pageId]).classList.add('active');
+  if (pageId === 'page-estudiantes') renderEstudiantes();
+  if (pageId === 'page-reportes') actualizarEstadisticas();
+  window.scrollTo(0,0);
+}
+
+function irAEstudiantes() { showPage('page-estudiantes'); }
+
+function setVista(v) {
+  vistaActual = v;
+  document.getElementById('vista-cursos').style.display = v === 'cursos' ? 'block' : 'none';
+  document.getElementById('vista-lista').style.display = v === 'lista' ? 'block' : 'none';
+  document.getElementById('btn-vista-cursos').className = v === 'cursos' ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
+  document.getElementById('btn-vista-lista').className = v === 'lista' ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
+  renderEstudiantes();
+}
+
+// ============================================================
+// RENDER STUDENTS
+// ============================================================
+function renderEstudiantes() {
+  const q = (document.getElementById('buscar-estudiante')?.value || '').toLowerCase().trim();
+  const cursoFiltro = document.getElementById('filtro-curso')?.value || '';
+  
+  let lista = [...estudiantes];
+  if (q) lista = lista.filter(e => e.nombre.toLowerCase().includes(q));
+  if (cursoFiltro) lista = lista.filter(e => e.curso === cursoFiltro);
+  listaFiltrada = lista;
+
+  if (vistaActual === 'cursos') renderPorCursos(lista);
+  else renderLista(lista);
+
+  actualizarHeader();
+}
+
+function getObsCount(estudianteId) {
+  return observaciones.filter(o => o.estudianteId === estudianteId).length;
+}
+
+function getInitials(nombre) {
+  return nombre.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase().slice(0,2);
+}
+
+function renderPorCursos(lista) {
+  const container = document.getElementById('vista-cursos');
+  if (lista.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">Sin resultados</div></div>';
+    return;
+  }
+  const grupos = {};
+  lista.forEach(e => { if (!grupos[e.curso]) grupos[e.curso] = []; grupos[e.curso].push(e); });
+  
+  container.innerHTML = Object.keys(grupos).sort().map(curso => {
+    const estList = grupos[curso];
+    return `
+      <div class="curso-group">
+        <button class="curso-header-btn" onclick="toggleCursoUI('cc-${curso.replace(/\s/g,'-')}', this)">
+          <div class="curso-name">
+            📚 ${curso}
+            <span class="curso-badge">${estList.length}</span>
+          </div>
+          <span class="curso-chevron" id="chev-${curso.replace(/\s/g,'-')}">▼</span>
+        </button>
+        <div class="curso-body" id="cc-${curso.replace(/\s/g,'-')}">
+          ${estList.map(e => renderStudentRow(e)).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleCursoUI(bodyId, btn) {
+  const body = document.getElementById(bodyId);
+  const isOpen = body.classList.contains('show');
+  body.classList.toggle('show', !isOpen);
+  const chev = btn.querySelector('.curso-chevron');
+  if (chev) chev.classList.toggle('open', !isOpen);
+}
+
+function renderLista(lista) {
+  const container = document.getElementById('vista-lista');
+  if (lista.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">Sin resultados</div></div>';
+    return;
+  }
+  const html = `<div class="card" style="padding:0;overflow:hidden;">${lista.map(e => renderStudentRow(e)).join('')}</div>`;
+  container.innerHTML = html;
+}
+
+function renderStudentRow(e) {
+  const cnt = getObsCount(e.id);
+  const sel = estudianteSeleccionado && estudianteSeleccionado.id === e.id;
+  return `
+    <div class="student-row${sel ? ' selected' : ''}" onclick="abrirPanel(${e.id})">
+      <div class="student-avatar">${getInitials(e.nombre)}</div>
+      <div class="student-info">
+        <div class="student-name-text">${e.nombre}</div>
+        <div class="student-obs-count${cnt ? ' has-obs' : ''}">${cnt ? `${cnt} observación${cnt>1?'es':''}` : e.curso}</div>
+      </div>
+      <div class="student-actions" onclick="event.stopPropagation()">
+        <button class="btn-icon amber" onclick="editarNombreEstudiante(${e.id})" title="Editar">✏️</button>
+        <button class="btn-icon red" onclick="eliminarEstudiante(${e.id})" title="Eliminar">🗑️</button>
+      </div>
+    </div>`;
+}
+
+function filtrarEstudiantes(q) { renderEstudiantes(); }
+
+// ============================================================
+// PANEL LATERAL
+// ============================================================
+function abrirPanel(id) {
+  estudianteSeleccionado = estudiantes.find(e => e.id === id);
+  if (!estudianteSeleccionado) return;
+  renderPanel();
+  document.getElementById('sidePanel').classList.add('show');
+  document.getElementById('panelOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderPanel() {
+  if (!estudianteSeleccionado) return;
+  const e = estudianteSeleccionado;
+  document.getElementById('panelNombre').textContent = e.nombre;
+  document.getElementById('panelCurso').textContent = e.curso;
+
+  // Navigation buttons
+  const cursoList = estudiantes.filter(x => x.curso === e.curso);
+  const idx = cursoList.findIndex(x => x.id === e.id);
+  document.getElementById('btnPrev').disabled = idx <= 0;
+  document.getElementById('btnNext').disabled = idx >= cursoList.length - 1;
+
+  // Quick texts
+  renderPanelTextos();
+  renderPanelObs();
+  document.getElementById('obsPersonalizada').value = '';
+}
+
+function renderPanelTextos() {
+  // Use data-index to avoid quote/escaping issues in onclick attributes
+  const posGrid = textosRapidos.positive.map((t, i) =>
+    `<button class="quick-btn pos" data-tipo="positive" data-idx="${i}" onclick="clickTextoRapido(this)">${escHtml(t)}</button>`
+  ).join('');
+  const negGrid = textosRapidos.negative.map((t, i) =>
+    `<button class="quick-btn neg" data-tipo="negative" data-idx="${i}" onclick="clickTextoRapido(this)">${escHtml(t)}</button>`
+  ).join('');
+  
+  document.getElementById('panelTextosPos').innerHTML =
+    `<div class="quick-section-title pos">✨ Positivos</div><div class="quick-grid">${posGrid}</div>`;
+  document.getElementById('panelTextosNeg').innerHTML =
+    `<div class="quick-section-title neg">⚠️ Necesita Mejorar</div><div class="quick-grid">${negGrid}</div>`;
+}
+
+function clickTextoRapido(btn) {
+  const tipo = btn.getAttribute('data-tipo');
+  const idx  = parseInt(btn.getAttribute('data-idx'), 10);
+  const texto = textosRapidos[tipo][idx];
+  if (texto) agregarObsRapida(texto, tipo);
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function renderPanelObs() {
+  if (!estudianteSeleccionado) return;
+  const obs = observaciones.filter(o => o.estudianteId === estudianteSeleccionado.id)
+                           .sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+  const container = document.getElementById('panelObservaciones');
+  if (obs.length === 0) {
+    container.innerHTML = '<div class="empty-state" style="padding:20px;"><div class="empty-state-icon">📋</div><div class="empty-state-text">Sin observaciones</div></div>';
+    return;
+  }
+  container.innerHTML = obs.map(o => renderObsItem(o)).join('');
+}
+
+function renderObsItem(o) {
+  const fecha = new Date(o.fecha).toLocaleString('es-BO', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+  const cls = o.tipo === 'positive' ? 'pos' : o.tipo === 'negative' ? 'neg' : 'neutral';
+  const textoSafe = escHtml(o.texto);
+  return `
+    <div class="obs-item ${cls}" id="obs-item-${o.id}" data-obs-id="${o.id}">
+      <div class="obs-date">🕐 ${fecha}</div>
+      <div class="obs-text" id="obs-text-${o.id}">${textoSafe}</div>
+      <div class="obs-actions">
+        <button class="btn btn-ghost btn-sm" data-obs-id="${o.id}" onclick="editarObservacion(parseInt(this.dataset.obsId))">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" data-obs-id="${o.id}" onclick="eliminarObsPanelLocal(parseInt(this.dataset.obsId))">🗑️</button>
+      </div>
+    </div>`;
+}
+
+// EDITABLE OBSERVATIONS
+function editarObservacion(id) {
+  const obs = observaciones.find(o => o.id === id);
+  if (!obs) return;
+  const textEl = document.getElementById('obs-text-' + id);
+  if (!textEl) return;
+  // Store original text in dataset for safe cancel
+  textEl.dataset.original = obs.texto;
+  textEl.innerHTML =
+    '<textarea class="obs-edit-area" id="obs-edit-' + id + '">' + escHtml(obs.texto) + '</textarea>' +
+    '<div style="display:flex;gap:6px;margin-top:6px;">' +
+    '<button class="btn btn-success btn-sm" data-obs-id="' + id + '" onclick="guardarEdicionObs(parseInt(this.dataset.obsId))">✓ Guardar</button>' +
+    '<button class="btn btn-ghost btn-sm" data-obs-id="' + id + '" onclick="cancelarEdicionObs(parseInt(this.dataset.obsId))">✕ Cancelar</button>' +
+    '</div>';
+  const ta = document.getElementById('obs-edit-' + id);
+  if (ta) { ta.focus(); ta.select(); }
+}
+
+function guardarEdicionObs(id) {
+  const input = document.getElementById('obs-edit-' + id);
+  if (!input) return;
+  const nuevoTexto = input.value.trim();
+  if (!nuevoTexto) { toast('El texto no puede estar vacío', '#dc2626'); return; }
+  const obs = observaciones.find(o => o.id === id);
+  if (obs) {
+    obs.texto = nuevoTexto;
+    obs.editado = true;
+    localStorage.setItem('observaciones_simple', JSON.stringify(observaciones));
+    renderPanelObs();
+    actualizarHeader();
+    toast('✓ Observación actualizada', '#059669');
+  }
+}
+
+function cancelarEdicionObs(id) {
+  const textEl = document.getElementById('obs-text-' + id);
+  if (textEl) {
+    const original = textEl.dataset.original || '';
+    textEl.innerHTML = escHtml(original);
+  }
+  renderPanelObs();
+}
+
+function eliminarObsPanelLocal(id) {
+  if (!confirm('¿Eliminar esta observación?')) return;
+  observaciones = observaciones.filter(o => o.id !== id);
+  localStorage.setItem('observaciones_simple', JSON.stringify(observaciones));
+  renderPanelObs();
+  actualizarHeader();
+  actualizarDashboard();
+  toast('✓ Eliminada', '#dc2626');
+}
+
+function agregarObsRapida(texto, tipo) {
+  if (!estudianteSeleccionado) return;
+  const obs = { id: Date.now(), estudianteId: estudianteSeleccionado.id, texto, tipo, fecha: new Date().toISOString() };
+  observaciones.push(obs);
+  localStorage.setItem('observaciones_simple', JSON.stringify(observaciones));
+  renderPanelObs();
+  actualizarHeader();
+  actualizarDashboard();
+  toast(`✓ ${tipo === 'positive' ? '✨' : '⚠️'} Observación guardada`, tipo === 'positive' ? '#059669' : '#dc2626');
+}
+
+function agregarObsPersonalizada(tipo) {
+  const txt = document.getElementById('obsPersonalizada').value.trim();
+  if (!txt) { toast('Escribe una observación primero', '#d97706'); return; }
+  agregarObsRapida(txt, tipo);
+  document.getElementById('obsPersonalizada').value = '';
+}
+
+function navegarEstudiante(dir) {
+  if (!estudianteSeleccionado) return;
+  const cursoList = estudiantes.filter(x => x.curso === estudianteSeleccionado.curso);
+  const idx = cursoList.findIndex(x => x.id === estudianteSeleccionado.id);
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= cursoList.length) return;
+  estudianteSeleccionado = cursoList[newIdx];
+  renderPanel();
+}
+
+function editarNombrePanel() {
+  const nuevoNombre = prompt('Nuevo nombre del estudiante:', estudianteSeleccionado.nombre);
+  if (!nuevoNombre || !nuevoNombre.trim()) return;
+  const e = estudiantes.find(x => x.id === estudianteSeleccionado.id);
+  if (e) {
+    e.nombre = nuevoNombre.trim();
+    estudianteSeleccionado = e;
+    localStorage.setItem('estudiantes_simple', JSON.stringify(estudiantes));
+    document.getElementById('panelNombre').textContent = e.nombre;
+    renderEstudiantes();
+    toast('✓ Nombre actualizado', '#059669');
+  }
+}
+
+function cerrarPanel() {
+  document.getElementById('sidePanel').classList.remove('show');
+  document.getElementById('panelOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  estudianteSeleccionado = null;
+  renderEstudiantes();
+}
+
+// ============================================================
+// STUDENT MANAGEMENT
+// ============================================================
+function agregarEstudiante() {
+  const nombre = document.getElementById('nombreEstudiante').value.trim();
+  const curso = document.getElementById('cursoEstudiante').value;
+  if (!nombre) { toast('Ingresa el nombre del estudiante', '#d97706'); return; }
+  if (!curso) { toast('Selecciona un curso', '#d97706'); return; }
+  const e = { id: Date.now(), nombre, curso, fechaRegistro: new Date().toISOString() };
+  estudiantes.push(e);
+  localStorage.setItem('estudiantes_simple', JSON.stringify(estudiantes));
+  document.getElementById('nombreEstudiante').value = '';
+  actualizarHeader();
+  actualizarSelectoresCursos();
+  toast(`✓ ${nombre} agregado`, '#059669');
+}
+
+function editarNombreEstudiante(id) {
+  const e = estudiantes.find(x => x.id === id);
+  if (!e) return;
+  const nuevo = prompt('Nuevo nombre:', e.nombre);
+  if (!nuevo || !nuevo.trim()) return;
+  e.nombre = nuevo.trim();
+  localStorage.setItem('estudiantes_simple', JSON.stringify(estudiantes));
+  renderEstudiantes();
+  toast('✓ Nombre actualizado', '#059669');
+}
+
+function eliminarEstudiante(id) {
+  const e = estudiantes.find(x => x.id === id);
+  if (!e) return;
+  if (!confirm(`¿Eliminar a ${e.nombre}?`)) return;
+  estudiantes = estudiantes.filter(x => x.id !== id);
+  observaciones = observaciones.filter(o => o.estudianteId !== id);
+  localStorage.setItem('estudiantes_simple', JSON.stringify(estudiantes));
+  localStorage.setItem('observaciones_simple', JSON.stringify(observaciones));
+  renderEstudiantes();
+  actualizarHeader();
+  toast('Estudiante eliminado', '#dc2626');
+}
+
+function cargarEstudiantesManual() {
+  if (!estudiantesPrecargadosData.length) { toast('No hay datos precargados', '#d97706'); return; }
+  if (estudiantes.length > 0 && !confirm(`Ya tienes ${estudiantes.length} estudiantes. ¿Reemplazar con los 464 estudiantes?`)) return;
+  estudiantes = JSON.parse(JSON.stringify(estudiantesPrecargadosData));
+  localStorage.setItem('estudiantes_simple', JSON.stringify(estudiantes));
+  renderEstudiantes();
+  actualizarHeader();
+  actualizarSelectoresCursos();
+  toast(`✅ ${estudiantes.length} estudiantes cargados`, '#059669');
+}
+
+function borrarTodosLosDatos() {
+  if (!confirm('⚠️ ¿Borrar TODOS los datos? Esta acción no se puede deshacer.')) return;
+  localStorage.removeItem('estudiantes_simple');
+  localStorage.removeItem('observaciones_simple');
+  localStorage.removeItem('cursos_simple');
+  location.reload();
+}
+
+// ============================================================
+// COURSE MANAGEMENT
+// ============================================================
+function agregarCurso() {
+  const nuevo = document.getElementById('nuevoCurso').value.trim();
+  if (!nuevo) { toast('Ingresa el nombre del curso', '#d97706'); return; }
+  if (cursos.includes(nuevo)) { toast('Ese curso ya existe', '#d97706'); return; }
+  cursos.push(nuevo);
+  localStorage.setItem('cursos_simple', JSON.stringify(cursos));
+  document.getElementById('nuevoCurso').value = '';
+  actualizarSelectoresCursos();
+  actualizarListaCursos();
+  toast(`✓ Curso "${nuevo}" agregado`, '#059669');
+}
+
+function eliminarCurso(nombre) {
+  if (estudiantes.some(e => e.curso === nombre)) { toast('Elimina primero los estudiantes de ese curso', '#d97706'); return; }
+  if (!confirm(`¿Eliminar el curso "${nombre}"?`)) return;
+  cursos = cursos.filter(c => c !== nombre);
+  localStorage.setItem('cursos_simple', JSON.stringify(cursos));
+  actualizarSelectoresCursos();
+  actualizarListaCursos();
+  toast('Curso eliminado', '#dc2626');
+}
+
+function actualizarSelectoresCursos() {
+  ['cursoEstudiante', 'filtro-curso', 'cursoReporte'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const val = sel.value;
+    const isFilter = id === 'filtro-curso';
+    sel.innerHTML = (isFilter ? '<option value="">Todos los cursos</option>' : '') +
+      cursos.map(c => `<option value="${c}">${c}</option>`).join('');
+    if (val) sel.value = val;
+  });
+}
+
+function actualizarListaCursos() {
+  const container = document.getElementById('listaCursos');
+  if (!container) return;
+  container.innerHTML = cursos.map(c => `
+    <div class="curso-mgmt-item">
+      <span>📚 ${c}</span>
+      <button class="btn btn-danger btn-sm" onclick="eliminarCurso('${c}')">🗑️</button>
+    </div>`).join('');
+}
+
+// ============================================================
+// STATISTICS & HEADER
+// ============================================================
+function actualizarHeader() {
+  document.getElementById('hdr-estudiantes').textContent = estudiantes.length;
+  document.getElementById('hdr-observaciones').textContent = observaciones.length;
+  actualizarDashboard();
+}
+
+function actualizarDashboard() {
+  const hoy = new Date().toDateString();
+  const obsHoy = observaciones.filter(o => new Date(o.fecha).toDateString() === hoy).length;
+  document.getElementById('dash-total').textContent = estudiantes.length;
+  document.getElementById('dash-hoy').textContent = obsHoy;
+  document.getElementById('dash-total-obs').textContent = observaciones.length;
+  document.getElementById('dash-cursos').textContent = cursos.length;
+  document.getElementById('rpt-total-obs').textContent = observaciones.length;
+  document.getElementById('rpt-hoy').textContent = obsHoy;
+  renderObsRecientes();
+}
+
+function renderObsRecientes() {
+  const container = document.getElementById('obs-recientes');
+  const recientes = [...observaciones].sort((a,b) => new Date(b.fecha) - new Date(a.fecha)).slice(0, 6);
+  if (!recientes.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📝</div><div class="empty-state-text">Sin observaciones aún</div></div>';
+    return;
+  }
+  container.innerHTML = recientes.map(o => {
+    const e = estudiantes.find(x => x.id === o.estudianteId);
+    const fecha = new Date(o.fecha).toLocaleString('es-BO', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+    const cls = o.tipo === 'positive' ? 'pos' : o.tipo === 'negative' ? 'neg' : 'neutral';
+    return `<div class="obs-item ${cls}" style="margin:8px 16px;">
+      <div class="obs-date">${e ? e.nombre : '?'} · ${fecha}</div>
+      <div class="obs-text">${o.texto}</div>
+    </div>`;
+  }).join('');
+}
+
+function actualizarEstadisticas() { actualizarDashboard(); }
+
+// ============================================================
+// REPORTS
+// ============================================================
+function toggleCursoReporte() {
+  document.getElementById('cursoReporteDiv').style.display =
+    document.getElementById('tipoReporte').value === 'curso' ? 'block' : 'none';
+}
+
+function generarReporte() {
+  const tipo = document.getElementById('tipoReporte').value;
+  const hoy = new Date();
+  const todayStr = hoy.toDateString();
+  let obs = [...observaciones];
+  let titulo = '';
+
+  if (tipo === 'hoy') {
+    obs = obs.filter(o => new Date(o.fecha).toDateString() === todayStr);
+    titulo = `OBSERVACIONES DEL DÍA - ${hoy.toLocaleDateString('es-BO')}`;
+  } else if (tipo === 'semanal') {
+    const hace7 = new Date(hoy - 7 * 86400000);
+    obs = obs.filter(o => new Date(o.fecha) >= hace7);
+    titulo = `REPORTE SEMANAL - Semana del ${hace7.toLocaleDateString('es-BO')}`;
+  } else if (tipo === 'completo') {
+    titulo = `REPORTE COMPLETO - ${hoy.toLocaleDateString('es-BO')}`;
+  } else if (tipo === 'curso') {
+    const curso = document.getElementById('cursoReporte').value;
+    const ids = estudiantes.filter(e => e.curso === curso).map(e => e.id);
+    obs = obs.filter(o => ids.includes(o.estudianteId));
+    titulo = `REPORTE DE ${curso} - ${hoy.toLocaleDateString('es-BO')}`;
+  }
+
+  if (!obs.length) {
+    toast('Sin datos para este período', '#d97706');
+    document.getElementById('exportButtons').style.display = 'none';
+    document.getElementById('reportePreview').innerHTML = '<div class="alert alert-warn" style="margin-top:12px;"><span class="alert-icon">⚠️</span><div>No hay observaciones para este filtro.</div></div>';
+    return;
+  }
+
+  obs.sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+  let txt = `📋 ${titulo}\nProf. Marcelo — Música — C.N.S. del Pilar\n${'═'.repeat(50)}\n\n`;
+  txt += `Total observaciones: ${obs.length}\n\n`;
+  
+  const porEstudiante = {};
+  obs.forEach(o => {
+    const e = estudiantes.find(x => x.id === o.estudianteId);
+    const key = e ? `${e.nombre} (${e.curso})` : 'Desconocido';
+    if (!porEstudiante[key]) porEstudiante[key] = [];
+    porEstudiante[key].push(o);
+  });
+
+  Object.entries(porEstudiante).forEach(([nombre, lista]) => {
+    txt += `▸ ${nombre}\n`;
+    lista.forEach(o => {
+      const f = new Date(o.fecha).toLocaleString('es-BO', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+      const icono = o.tipo === 'positive' ? '✅' : o.tipo === 'negative' ? '⚠️' : '📋';
+      txt += `  ${icono} [${f}] ${o.texto}\n`;
+    });
+    txt += '\n';
+  });
+
+  txt += `\n${'─'.repeat(50)}\nGenerado: ${hoy.toLocaleString('es-BO')}`;
+  reporteGenerado = txt;
+  document.getElementById('reportePreview').innerHTML = `<div class="report-box">${txt}</div>`;
+  document.getElementById('exportButtons').style.display = 'grid';
+}
+
+function copiarReporte() {
+  navigator.clipboard.writeText(reporteGenerado).then(() => toast('✓ Copiado al portapapeles', '#059669'));
+}
+
+function descargarReporte() {
+  const blob = new Blob([reporteGenerado], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `reporte-musica-${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('✓ Archivo descargado', '#059669');
+}
+
+// ============================================================
+// EXPORT / IMPORT
+// ============================================================
+function exportarTodosDatos() {
+  const data = { estudiantes, observaciones, cursos, textosRapidos, fechaExportacion: new Date().toISOString(), version: 2 };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `seguimiento-musica-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('✅ Datos exportados correctamente', '#059669');
+}
+
+function importarDatos(event) {
+  const archivo = event.target.files[0];
+  if (!archivo) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const respaldo = JSON.parse(e.target.result);
+      if (!respaldo.estudiantes || !respaldo.observaciones) throw new Error('Formato inválido');
+      const msg = `📊 Respaldo: ${respaldo.estudiantes.length} estudiantes, ${respaldo.observaciones.length} observaciones\nFecha: ${new Date(respaldo.fechaExportacion).toLocaleString('es-BO')}\n\n¿Reemplazar los datos actuales?`;
+      if (!confirm(msg)) return;
+      estudiantes = respaldo.estudiantes;
+      observaciones = respaldo.observaciones;
+      cursos = respaldo.cursos || cursos;
+      textosRapidos = respaldo.textosRapidos || textosRapidos;
+      localStorage.setItem('estudiantes_simple', JSON.stringify(estudiantes));
+      localStorage.setItem('observaciones_simple', JSON.stringify(observaciones));
+      localStorage.setItem('cursos_simple', JSON.stringify(cursos));
+      localStorage.setItem('textos_rapidos', JSON.stringify(textosRapidos));
+      actualizarHeader();
+      actualizarSelectoresCursos();
+      actualizarListaCursos();
+      renderEstudiantes();
+      toast(`✅ Importados: ${estudiantes.length} estudiantes`, '#059669');
+    } catch (err) {
+      toast('❌ Archivo inválido', '#dc2626');
+    }
+  };
+  reader.readAsText(archivo);
+  event.target.value = '';
+}
+
+// ============================================================
+// QUICK TEXTS EDITOR (MODAL)
+// ============================================================
+function abrirModalTextos() {
+  document.getElementById('modalTextos').classList.add('show');
+  renderModalTextos();
+}
+
+function cerrarModalTextos() {
+  document.getElementById('modalTextos').classList.remove('show');
+}
+
+function renderModalTextos() {
+  ['positive', 'negative'].forEach(tipo => {
+    const cls = tipo === 'positive' ? 'pos' : 'neg';
+    const elId = tipo === 'positive' ? 'listaTextosPositivos' : 'listaTextosNegativos';
+    const el = document.getElementById(elId);
+    if (!el) return;
+    el.innerHTML = textosRapidos[tipo].map((txt, i) =>
+      '<div class="qtext-item ' + cls + '" id="qti-' + tipo + '-' + i + '" ' +
+           'data-tipo="' + tipo + '" data-idx="' + i + '" onclick="editarQText(this)">' +
+        '<span class="qtext-text" id="qtt-' + tipo + '-' + i + '">' + escHtml(txt) + '</span>' +
+        '<button data-tipo="' + tipo + '" data-idx="' + i + '" onclick="event.stopPropagation();eliminarQTextBtn(this)" ' +
+                'style="background:#ef4444;color:white;border:none;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:0.75rem;">🗑️</button>' +
+      '</div>'
+    ).join('');
+  });
+}
+
+function editarQText(el) {
+  if (textoEditandose) guardarQText();
+  const tipo = el.dataset.tipo;
+  const index = parseInt(el.dataset.idx, 10);
+  const span = document.getElementById('qtt-' + tipo + '-' + index);
+  if (!span) return;
+  const current = textosRapidos[tipo][index];
+  span.innerHTML = '<input type="text" class="qtext-edit-input" id="qte-' + tipo + '-' + index + '" value="' + escHtml(current) + '">';
+  textoEditandose = { tipo, index };
+  const inp = document.getElementById('qte-' + tipo + '-' + index);
+  if (inp) {
+    inp.focus();
+    inp.select();
+    inp.addEventListener('blur', guardarQText);
+    inp.addEventListener('keydown', function(ev){ if(ev.key==='Enter') guardarQText(); });
+  }
+}
+
+function eliminarQTextBtn(btn) {
+  const tipo = btn.dataset.tipo;
+  const idx  = parseInt(btn.dataset.idx, 10);
+  eliminarTextoRapido(tipo, idx);
+}
+
+function guardarQText() {
+  if (!textoEditandose) return;
+  const { tipo, index } = textoEditandose;
+  textoEditandose = null; // clear first to avoid re-entry
+  const input = document.getElementById('qte-' + tipo + '-' + index);
+  if (!input) { renderModalTextos(); return; }
+  const val = input.value.trim();
+  if (!val) { renderModalTextos(); return; }
+  textosRapidos[tipo][index] = val;
+  localStorage.setItem('textos_rapidos', JSON.stringify(textosRapidos));
+  renderModalTextos();
+  if (estudianteSeleccionado) renderPanelTextos();
+  toast('✓ Texto actualizado', '#3b82f6');
+}
+
+function agregarTextoPersonalizado(tipo) {
+  const inputId = tipo === 'positive' ? 'nuevoTextoPositivo' : 'nuevoTextoNegativo';
+  const input = document.getElementById(inputId);
+  const txt = input.value.trim();
+  if (!txt) { toast('Escribe el texto primero', '#d97706'); return; }
+  textosRapidos[tipo].push(txt);
+  localStorage.setItem('textos_rapidos', JSON.stringify(textosRapidos));
+  input.value = '';
+  renderModalTextos();
+  if (estudianteSeleccionado) renderPanelTextos();
+  toast('✓ Texto agregado', '#059669');
+}
+
+function eliminarTextoRapido(tipo, index) {
+  if (!confirm('¿Eliminar este texto rápido?')) return;
+  textosRapidos[tipo].splice(index, 1);
+  localStorage.setItem('textos_rapidos', JSON.stringify(textosRapidos));
+  renderModalTextos();
+  if (estudianteSeleccionado) renderPanelTextos();
+  toast('Texto eliminado', '#dc2626');
+}
+
+function restaurarTextosDefecto() {
+  if (!confirm('¿Restaurar textos por defecto?')) return;
+  textosRapidos = JSON.parse(JSON.stringify(textosRapidosDefecto));
+  localStorage.setItem('textos_rapidos', JSON.stringify(textosRapidos));
+  renderModalTextos();
+  if (estudianteSeleccionado) renderPanelTextos();
+  toast('✓ Textos restaurados', '#d97706');
+}
+
+// ============================================================
+// TOAST NOTIFICATION
+// ============================================================
+let toastTimeout;
+function toast(msg, color = '#0f2044') {
+  const el = document.getElementById('toast');
+  clearTimeout(toastTimeout);
+  el.textContent = msg;
+  el.style.background = color;
+  el.classList.add('show');
+  toastTimeout = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ============================================================
+// PWA INSTALL
+// ============================================================
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-banner').classList.add('show');
+});
+
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => {
+    deferredPrompt = null;
+    document.getElementById('install-banner').style.display = 'none';
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  // Load students if none saved
+  if (estudiantes.length === 0 && estudiantesPrecargadosData.length) {
+    estudiantes = estudiantesPrecargadosData;
+    localStorage.setItem('estudiantes_simple', JSON.stringify(estudiantes));
+  }
+
+  // Set date
+  const now = new Date();
+  document.getElementById('fecha-hoy').textContent =
+    now.toLocaleDateString('es-BO', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  actualizarHeader();
+  actualizarSelectoresCursos();
+  actualizarListaCursos();
+  renderEstudiantes();
+});
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('[PWA] SW registrado:', reg.scope))
+      .catch(err => console.warn('[PWA] SW error:', err));
+  });
+}
+</script>
+</body>
+</html>

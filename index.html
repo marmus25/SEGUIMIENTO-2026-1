@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#1a3a6e">
+  <meta name="theme-color" content="#0d0f14">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Seguimiento">
@@ -14,45 +14,57 @@
   <!-- Google Fonts: DM Sans + Playfair Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
   <style>
     /* =============================================
-       CSS VARIABLES & RESET
+       DESIGN SYSTEM — DARK MUSIC THEME
+       Inspirado en Spotify + ClassDojo + Linear
     ============================================= */
     :root {
-      --oxford: #0f2044;
-      --navy: #1a3a6e;
-      --blue: #2557a7;
-      --sky: #3b82f6;
-      --accent: #60a5fa;
-      --teal: #0ea5e9;
-      --positive: #059669;
-      --positive-bg: #d1fae5;
-      --positive-border: #34d399;
-      --negative: #dc2626;
-      --negative-bg: #fee2e2;
-      --negative-border: #f87171;
-      --neutral: #f59e0b;
-      --neutral-bg: #fef3c7;
-      --surface: #ffffff;
-      --surface-2: #f8fafc;
-      --surface-3: #f1f5f9;
-      --border: #e2e8f0;
-      --border-focus: #3b82f6;
-      --text-1: #0f172a;
-      --text-2: #475569;
-      --text-3: #94a3b8;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
-      --shadow-md: 0 4px 16px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.07);
-      --shadow-lg: 0 20px 40px rgba(0,0,0,.14);
-      --radius: 12px;
-      --radius-sm: 8px;
-      --radius-lg: 20px;
-      --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-display: 'Playfair Display', Georgia, serif;
-      --nav-h: 68px;
-      --header-h: 72px;
+      --bg: #0d0f14;
+      --bg-2: #13161d;
+      --bg-3: #1a1e28;
+      --bg-4: #222738;
+      --surface: #1e2230;
+      --surface-2: #252b3b;
+      --surface-3: #2d3448;
+      --border: rgba(255,255,255,0.08);
+      --border-2: rgba(255,255,255,0.12);
+      
+      --accent: #6c63ff;
+      --accent-2: #8b83ff;
+      --accent-glow: rgba(108,99,255,0.35);
+      --teal: #00d4aa;
+      --teal-dim: rgba(0,212,170,0.15);
+      --amber: #ffb84d;
+      --amber-dim: rgba(255,184,77,0.15);
+      --red: #ff5c7a;
+      --red-dim: rgba(255,92,122,0.15);
+      --green: #00d4aa;
+      --green-dim: rgba(0,212,170,0.12);
+      
+      --text-1: #f0f2f8;
+      --text-2: #9aa3be;
+      --text-3: #5a6482;
+      
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.4);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
+      --shadow-accent: 0 4px 20px rgba(108,99,255,0.4);
+      
+      --radius: 14px;
+      --radius-sm: 9px;
+      --radius-lg: 22px;
+      --radius-xl: 28px;
+      
+      --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-display: 'Syne', sans-serif;
+      --nav-h: 72px;
+      --header-h: 70px;
+      
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,19 +72,34 @@
 
     body {
       font-family: var(--font);
-      background: var(--surface-2);
+      background: var(--bg);
       color: var(--text-1);
       min-height: 100%;
       padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Subtle grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(108,99,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108,99,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     /* =============================================
        HEADER
     ============================================= */
     .app-header {
-      background: linear-gradient(135deg, var(--oxford) 0%, var(--navy) 60%, var(--blue) 100%);
-      color: white;
+      background: rgba(13,15,20,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: var(--text-1);
       padding: 0 20px;
       height: var(--header-h);
       display: flex;
@@ -81,63 +108,77 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: var(--shadow-md);
+      border-bottom: 1px solid var(--border);
     }
 
     .header-brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .header-icon {
-      width: 40px;
-      height: 40px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 10px;
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
+      box-shadow: var(--shadow-accent);
       flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-icon::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
     }
 
     .header-title {
       font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-size: 1.05rem;
+      font-weight: 800;
       letter-spacing: -0.02em;
-      line-height: 1.2;
+      color: var(--text-1);
     }
 
     .header-subtitle {
-      font-size: 0.72rem;
-      opacity: 0.7;
-      font-weight: 400;
+      font-size: 0.7rem;
+      color: var(--text-3);
+      font-weight: 500;
       letter-spacing: 0.02em;
     }
 
     .header-stats {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       align-items: center;
     }
 
     .header-pill {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: var(--surface-2);
+      border: 1px solid var(--border-2);
       border-radius: 20px;
       padding: 5px 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.73rem;
+      font-weight: 700;
       display: flex;
       align-items: center;
       gap: 5px;
+      color: var(--text-2);
       white-space: nowrap;
     }
 
     /* =============================================
-       BOTTOM NAV (MOBILE-FIRST)
+       BOTTOM NAV
     ============================================= */
     .bottom-nav {
       position: fixed;
@@ -145,13 +186,14 @@
       left: 0;
       right: 0;
       height: var(--nav-h);
-      background: var(--surface);
+      background: rgba(13,15,20,0.95);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border-top: 1px solid var(--border);
       display: flex;
       align-items: stretch;
       z-index: 200;
       padding-bottom: env(safe-area-inset-bottom);
-      box-shadow: 0 -4px 20px rgba(0,0,0,.08);
     }
 
     .nav-tab {
@@ -160,76 +202,75 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 4px;
       border: none;
       background: none;
       cursor: pointer;
       padding: 8px 4px;
       position: relative;
-      transition: all 0.2s ease;
+      transition: all 0.2s var(--ease-smooth);
       color: var(--text-3);
       font-family: var(--font);
       -webkit-tap-highlight-color: transparent;
     }
 
-    .nav-tab:active { transform: scale(0.92); }
+    .nav-tab:active { transform: scale(0.9); }
 
-    .nav-tab.active { color: var(--navy); }
+    .nav-tab.active { color: var(--accent-2); }
 
-    .nav-tab.active .nav-icon::before {
-      content: '';
-      position: absolute;
-      top: -3px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 36px;
-      height: 36px;
-      background: rgba(37,87,167,0.12);
-      border-radius: 10px;
-      z-index: -1;
+    .nav-tab.active .nav-icon-wrap {
+      background: rgba(108,99,255,0.18);
+      border-color: rgba(108,99,255,0.3);
     }
 
-    .nav-icon {
-      font-size: 20px;
-      position: relative;
+    .nav-icon-wrap {
+      width: 40px;
+      height: 32px;
+      border-radius: 10px;
+      border: 1px solid transparent;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 28px;
+      transition: all 0.2s;
+      position: relative;
     }
 
+    .nav-icon { font-size: 18px; }
+
     .nav-label {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 600;
       letter-spacing: 0.01em;
     }
 
     .nav-badge {
       position: absolute;
-      top: -2px;
-      right: -4px;
-      background: var(--negative);
+      top: -3px;
+      right: -3px;
+      background: var(--red);
       color: white;
-      font-size: 0.6rem;
-      font-weight: 700;
-      min-width: 16px;
-      height: 16px;
+      font-size: 0.55rem;
+      font-weight: 800;
+      min-width: 15px;
+      height: 15px;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0 3px;
-      border: 2px solid white;
+      border: 2px solid var(--bg);
     }
 
     /* =============================================
-       PAGES (TAB CONTENT)
+       PAGES
     ============================================= */
-    .page { display: none; padding: 16px; animation: fadeIn 0.2s ease; }
+    .page { display: none; padding: 16px; animation: fadeInUp 0.25s var(--ease-smooth); position: relative; z-index: 1; }
     .page.active { display: block; }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { 
+      from { opacity: 0; transform: translateY(10px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
 
     /* =============================================
        CARDS
@@ -237,10 +278,10 @@
     .card {
       background: var(--surface);
       border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
       border: 1px solid var(--border);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       overflow: hidden;
+      box-shadow: var(--shadow-sm);
     }
 
     .card-header {
@@ -252,9 +293,9 @@
     }
 
     .card-title {
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       font-weight: 700;
-      color: var(--navy);
+      color: var(--text-1);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -274,39 +315,50 @@
     }
 
     .stat-card {
-      background: linear-gradient(135deg, var(--oxford) 0%, var(--navy) 100%);
-      color: white;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 16px;
       text-align: center;
       position: relative;
       overflow: hidden;
+      transition: transform 0.2s var(--ease-spring), border-color 0.2s;
     }
+
+    .stat-card:active { transform: scale(0.97); }
 
     .stat-card::before {
       content: '';
       position: absolute;
-      top: -20px;
-      right: -20px;
-      width: 70px;
-      height: 70px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 50%;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--teal));
     }
 
-    .stat-card.green { background: linear-gradient(135deg, #065f46, #059669); }
-    .stat-card.amber { background: linear-gradient(135deg, #92400e, #d97706); }
-    .stat-card.red { background: linear-gradient(135deg, #991b1b, #dc2626); }
+    .stat-card.green::before { background: linear-gradient(90deg, var(--teal), #00f5c8); }
+    .stat-card.amber::before { background: linear-gradient(90deg, var(--amber), #ffd280); }
+    .stat-card.red::before { background: linear-gradient(90deg, var(--red), #ff8fa3); }
+    .stat-card:last-child::before { background: linear-gradient(90deg, #60a5fa, var(--accent)); }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; right: -20px;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+    }
 
     .stat-number {
       font-family: var(--font-display);
-      font-size: 2.2rem;
-      font-weight: 700;
+      font-size: 2.4rem;
+      font-weight: 800;
       line-height: 1;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
+      color: var(--text-1);
     }
 
-    .stat-label { font-size: 0.72rem; opacity: 0.85; font-weight: 500; letter-spacing: 0.02em; }
+    .stat-label { font-size: 0.68rem; color: var(--text-3); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
 
     /* =============================================
        FORMS
@@ -315,39 +367,45 @@
 
     .form-label {
       display: block;
-      font-size: 0.78rem;
-      font-weight: 600;
+      font-size: 0.75rem;
+      font-weight: 700;
       color: var(--text-2);
-      margin-bottom: 6px;
-      letter-spacing: 0.01em;
+      margin-bottom: 7px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
     }
 
     .form-control {
       width: 100%;
       padding: 11px 14px;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid var(--border-2);
       border-radius: var(--radius-sm);
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       font-family: var(--font);
       color: var(--text-1);
-      background: var(--surface);
-      transition: border-color 0.2s, box-shadow 0.2s;
+      background: var(--bg-3);
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
       -webkit-appearance: none;
       appearance: none;
     }
 
+    .form-control::placeholder { color: var(--text-3); }
+
     .form-control:focus {
       outline: none;
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      background: var(--bg-4);
     }
 
     select.form-control {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235a6482' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 14px center;
       padding-right: 36px;
     }
+
+    select.form-control option { background: var(--bg-3); color: var(--text-1); }
 
     /* =============================================
        BUTTONS
@@ -360,87 +418,91 @@
       padding: 11px 18px;
       border: none;
       border-radius: var(--radius-sm);
-      font-size: 0.875rem;
-      font-weight: 600;
+      font-size: 0.85rem;
+      font-weight: 700;
       font-family: var(--font);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.15s var(--ease-smooth);
       -webkit-tap-highlight-color: transparent;
       line-height: 1;
       white-space: nowrap;
+      letter-spacing: 0.01em;
     }
 
-    .btn:active { transform: scale(0.96); }
+    .btn:active { transform: scale(0.95); }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
+      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
       color: white;
-      box-shadow: 0 2px 8px rgba(37,87,167,0.3);
+      box-shadow: 0 4px 15px var(--accent-glow);
     }
-    .btn-primary:hover { filter: brightness(1.08); }
+    .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 6px 20px var(--accent-glow); }
 
     .btn-success {
-      background: linear-gradient(135deg, #059669, #065f46);
-      color: white;
-      box-shadow: 0 2px 8px rgba(5,150,105,0.3);
+      background: linear-gradient(135deg, var(--teal), #00a884);
+      color: #0d1f1a;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(0,212,170,0.3);
     }
 
     .btn-danger {
-      background: linear-gradient(135deg, #dc2626, #991b1b);
+      background: linear-gradient(135deg, var(--red), #e0284a);
       color: white;
-      box-shadow: 0 2px 8px rgba(220,38,38,0.3);
+      box-shadow: 0 4px 15px rgba(255,92,122,0.3);
     }
 
     .btn-amber {
-      background: linear-gradient(135deg, #d97706, #92400e);
-      color: white;
-      box-shadow: 0 2px 8px rgba(217,119,6,0.3);
+      background: linear-gradient(135deg, var(--amber), #e09020);
+      color: #1a0f00;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(255,184,77,0.3);
     }
 
     .btn-ghost {
-      background: var(--surface-3);
+      background: var(--surface-2);
       color: var(--text-2);
-      border: 1.5px solid var(--border);
+      border: 1.5px solid var(--border-2);
     }
-    .btn-ghost:hover { background: var(--border); }
+    .btn-ghost:hover { background: var(--surface-3); border-color: var(--accent); color: var(--text-1); }
 
     .btn-block { width: 100%; }
-    .btn-sm { padding: 7px 12px; font-size: 0.8rem; border-radius: 6px; }
+    .btn-sm { padding: 7px 12px; font-size: 0.78rem; border-radius: 7px; }
 
     .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     /* =============================================
-       ALERT INFO
+       ALERTS
     ============================================= */
     .alert {
       padding: 12px 14px;
       border-radius: var(--radius-sm);
-      font-size: 0.83rem;
+      font-size: 0.82rem;
       margin-bottom: 14px;
       display: flex;
       gap: 10px;
       align-items: flex-start;
+      border: 1px solid;
     }
 
-    .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
-    .alert-info { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
-    .alert-success { background: var(--positive-bg); color: #065f46; border: 1px solid var(--positive-border); }
-    .alert-warn { background: var(--neutral-bg); color: #92400e; border: 1px solid #fcd34d; }
+    .alert-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .alert-info { background: rgba(108,99,255,0.1); color: #a5b4fc; border-color: rgba(108,99,255,0.25); }
+    .alert-success { background: var(--teal-dim); color: var(--teal); border-color: rgba(0,212,170,0.3); }
+    .alert-warn { background: var(--amber-dim); color: var(--amber); border-color: rgba(255,184,77,0.3); }
 
     /* =============================================
        SECTION HEADING
     ============================================= */
     .section-heading {
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.68rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       color: var(--text-3);
       margin: 20px 0 10px;
     }
 
     /* =============================================
-       CURSO ACCORDION (Students by course)
+       CURSO ACCORDION
     ============================================= */
     .curso-group {
       background: var(--surface);
@@ -448,7 +510,11 @@
       border-radius: var(--radius);
       margin-bottom: 10px;
       overflow: hidden;
-      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s;
+    }
+
+    .curso-group:has(.curso-body.show) {
+      border-color: rgba(108,99,255,0.3);
     }
 
     .curso-header-btn {
@@ -462,32 +528,34 @@
       cursor: pointer;
       font-family: var(--font);
       -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
     }
 
-    .curso-header-btn:active { background: var(--surface-3); }
+    .curso-header-btn:active { background: var(--surface-2); }
 
     .curso-name {
       font-weight: 700;
       font-size: 0.9rem;
-      color: var(--navy);
+      color: var(--text-1);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .curso-badge {
-      background: var(--blue);
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 2px 8px;
+      background: rgba(108,99,255,0.2);
+      color: var(--accent-2);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 9px;
       border-radius: 10px;
+      border: 1px solid rgba(108,99,255,0.3);
     }
 
     .curso-chevron {
       color: var(--text-3);
       font-size: 0.75rem;
-      transition: transform 0.2s;
+      transition: transform 0.25s var(--ease-smooth);
     }
 
     .curso-chevron.open { transform: rotate(180deg); }
@@ -505,30 +573,31 @@
     .student-row {
       display: flex;
       align-items: center;
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--surface-3);
-      gap: 10px;
+      padding: 11px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      gap: 12px;
       cursor: pointer;
       transition: background 0.15s;
       -webkit-tap-highlight-color: transparent;
     }
 
     .student-row:last-child { border-bottom: none; }
-    .student-row:active { background: var(--surface-3); }
-    .student-row.selected { background: #dbeafe; }
+    .student-row:active { background: var(--surface-2); }
+    .student-row.selected { background: rgba(108,99,255,0.12); }
 
     .student-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--sky), var(--navy));
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
       color: white;
-      font-size: 0.75rem;
-      font-weight: 700;
+      font-size: 0.72rem;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      box-shadow: 0 2px 8px var(--accent-glow);
     }
 
     .student-info { flex: 1; min-width: 0; }
@@ -543,46 +612,47 @@
     }
 
     .student-obs-count {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-3);
-      margin-top: 1px;
+      margin-top: 2px;
+      font-weight: 500;
     }
 
-    .student-obs-count.has-obs { color: var(--positive); font-weight: 600; }
+    .student-obs-count.has-obs { color: var(--teal); font-weight: 700; }
 
     .student-actions { display: flex; gap: 6px; }
 
     .btn-icon {
       width: 30px;
       height: 30px;
-      border-radius: 7px;
+      border-radius: 8px;
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       transition: all 0.15s;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .btn-icon:active { transform: scale(0.9); }
-    .btn-icon.blue { background: #dbeafe; color: var(--blue); }
-    .btn-icon.amber { background: var(--neutral-bg); color: #92400e; }
-    .btn-icon.red { background: var(--negative-bg); color: var(--negative); }
+    .btn-icon:active { transform: scale(0.85); }
+    .btn-icon.blue { background: rgba(108,99,255,0.18); color: var(--accent-2); }
+    .btn-icon.amber { background: var(--amber-dim); color: var(--amber); }
+    .btn-icon.red { background: var(--red-dim); color: var(--red); }
 
     /* =============================================
-       SLIDE-IN PANEL (Student detail)
+       SLIDE-IN PANEL
     ============================================= */
     .panel-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.6);
       z-index: 300;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(4px);
     }
 
     .panel-overlay.show { opacity: 1; pointer-events: auto; }
@@ -593,21 +663,41 @@
       right: -100%;
       width: min(420px, 100vw);
       height: 100vh;
-      background: var(--surface);
+      background: var(--bg-2);
       z-index: 400;
-      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: right 0.32s var(--ease-smooth);
       display: flex;
       flex-direction: column;
-      box-shadow: var(--shadow-lg);
+      border-left: 1px solid var(--border);
     }
 
     .side-panel.show { right: 0; }
 
     .panel-head {
-      background: linear-gradient(135deg, var(--oxford) 0%, var(--navy) 100%);
-      color: white;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
       padding: 20px 16px 16px;
       flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-head::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--teal));
+    }
+
+    .panel-head::after {
+      content: '♪';
+      position: absolute;
+      right: 16px;
+      bottom: -10px;
+      font-size: 5rem;
+      opacity: 0.05;
+      color: var(--accent);
     }
 
     .panel-head-top {
@@ -624,15 +714,15 @@
 
     .btn-panel-nav {
       flex: 1;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: white;
+      background: var(--bg-3);
+      border: 1px solid var(--border-2);
+      color: var(--text-2);
       padding: 8px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-family: var(--font);
-      font-weight: 600;
+      font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -640,131 +730,156 @@
       transition: all 0.15s;
     }
 
-    .btn-panel-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-    .btn-panel-nav:not(:disabled):active { background: rgba(255,255,255,0.25); }
+    .btn-panel-nav:disabled { opacity: 0.25; cursor: not-allowed; }
+    .btn-panel-nav:not(:disabled):hover { border-color: var(--accent); color: var(--accent-2); }
+    .btn-panel-nav:not(:disabled):active { background: rgba(108,99,255,0.15); }
 
     .btn-close-panel {
-      background: rgba(255,255,255,0.15);
-      border: none;
-      color: white;
+      background: var(--surface-3);
+      border: 1px solid var(--border-2);
+      color: var(--text-2);
       width: 34px;
       height: 34px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      transition: all 0.15s;
     }
+
+    .btn-close-panel:hover { background: var(--red-dim); color: var(--red); border-color: var(--red); }
 
     .panel-student-name {
       font-family: var(--font-display);
       font-size: 1.15rem;
-      font-weight: 700;
+      font-weight: 800;
+      color: var(--text-1);
       margin-bottom: 4px;
     }
 
     .panel-student-curso {
-      font-size: 0.8rem;
-      opacity: 0.75;
+      font-size: 0.75rem;
+      color: var(--accent-2);
+      font-weight: 600;
     }
 
     .btn-edit-name-panel {
-      background: rgba(245,158,11,0.85);
-      border: none;
-      color: white;
+      background: var(--amber-dim);
+      border: 1px solid rgba(255,184,77,0.25);
+      color: var(--amber);
       padding: 6px 12px;
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-family: var(--font);
-      font-weight: 600;
-      margin-top: 8px;
+      font-weight: 700;
+      margin-top: 10px;
       transition: all 0.15s;
     }
 
     .panel-scroll { flex: 1; overflow-y: auto; padding: 16px; }
 
+    .panel-scroll::-webkit-scrollbar { width: 4px; }
+    .panel-scroll::-webkit-scrollbar-track { background: transparent; }
+    .panel-scroll::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 2px; }
+
     /* =============================================
-       QUICK TEXT BUTTONS (in panel)
+       QUICK TEXT BUTTONS
     ============================================= */
     .quick-section-title {
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.68rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.08em;
       margin-bottom: 8px;
     }
 
-    .quick-section-title.pos { color: var(--positive); }
-    .quick-section-title.neg { color: var(--negative); }
+    .quick-section-title.pos { color: var(--teal); }
+    .quick-section-title.neg { color: var(--red); }
 
     .quick-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      gap: 7px;
       margin-bottom: 16px;
     }
 
     .quick-btn {
       border: 1.5px solid;
-      border-radius: 8px;
+      border-radius: 9px;
       padding: 9px 10px;
       cursor: pointer;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-family: var(--font);
-      font-weight: 500;
+      font-weight: 600;
       text-align: left;
       transition: all 0.15s;
-      line-height: 1.3;
+      line-height: 1.35;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .quick-btn:active { transform: scale(0.95); }
+    .quick-btn:active { transform: scale(0.94); }
 
     .quick-btn.pos {
-      border-color: var(--positive-border);
-      background: var(--positive-bg);
-      color: #065f46;
+      border-color: rgba(0,212,170,0.3);
+      background: var(--teal-dim);
+      color: var(--teal);
     }
 
-    .quick-btn.pos:hover { background: #a7f3d0; }
+    .quick-btn.pos:hover { background: rgba(0,212,170,0.22); }
 
     .quick-btn.neg {
-      border-color: var(--negative-border);
-      background: var(--negative-bg);
-      color: #991b1b;
+      border-color: rgba(255,92,122,0.3);
+      background: var(--red-dim);
+      color: var(--red);
     }
 
-    .quick-btn.neg:hover { background: #fecaca; }
+    .quick-btn.neg:hover { background: rgba(255,92,122,0.22); }
 
     /* =============================================
        OBSERVATIONS LIST
     ============================================= */
     .obs-item {
-      border-radius: 9px;
-      padding: 11px 12px;
+      border-radius: 10px;
+      padding: 11px 13px;
       margin-bottom: 8px;
       border-left: 3px solid;
       position: relative;
+      border: 1px solid;
     }
 
-    .obs-item.pos { background: var(--positive-bg); border-left-color: var(--positive); }
-    .obs-item.neg { background: var(--negative-bg); border-left-color: var(--negative); }
-    .obs-item.neutral { background: var(--neutral-bg); border-left-color: var(--neutral); }
+    .obs-item.pos { 
+      background: var(--teal-dim); 
+      border-color: rgba(0,212,170,0.25);
+      border-left: 3px solid var(--teal);
+    }
+    .obs-item.neg { 
+      background: var(--red-dim); 
+      border-color: rgba(255,92,122,0.25);
+      border-left: 3px solid var(--red);
+    }
+    .obs-item.neutral { 
+      background: var(--amber-dim); 
+      border-color: rgba(255,184,77,0.25);
+      border-left: 3px solid var(--amber);
+    }
 
     .obs-date {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       color: var(--text-3);
       margin-bottom: 4px;
-      font-weight: 500;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .obs-text {
-      font-size: 0.83rem;
+      font-size: 0.82rem;
       color: var(--text-1);
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .obs-actions {
@@ -773,41 +888,44 @@
       margin-top: 8px;
     }
 
-    /* Edit mode for observations */
     .obs-edit-area {
       width: 100%;
       padding: 8px;
-      border: 1.5px solid var(--border-focus);
-      border-radius: 6px;
-      font-size: 0.83rem;
+      border: 1.5px solid var(--accent);
+      border-radius: 7px;
+      font-size: 0.82rem;
       font-family: var(--font);
+      background: var(--bg-3);
+      color: var(--text-1);
       resize: vertical;
       min-height: 60px;
       margin-top: 4px;
     }
 
-    .obs-edit-area:focus { outline: none; }
+    .obs-edit-area:focus { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
 
     /* =============================================
-       NOTIFICATION TOAST
+       TOAST
     ============================================= */
     #toast {
       position: fixed;
-      bottom: calc(var(--nav-h) + 12px + env(safe-area-inset-bottom));
+      bottom: calc(var(--nav-h) + 14px + env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: var(--oxford);
-      color: white;
+      background: var(--surface-3);
+      color: var(--text-1);
+      border: 1px solid var(--border-2);
       padding: 10px 20px;
       border-radius: 30px;
-      font-size: 0.83rem;
-      font-weight: 600;
+      font-size: 0.82rem;
+      font-weight: 700;
       z-index: 1000;
       opacity: 0;
-      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      transition: all 0.3s var(--ease-spring);
       white-space: nowrap;
       box-shadow: var(--shadow-md);
       pointer-events: none;
+      backdrop-filter: blur(10px);
     }
 
     #toast.show {
@@ -816,98 +934,104 @@
     }
 
     /* =============================================
-       MODAL (for quick texts editor)
+       MODAL
     ============================================= */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.7);
       z-index: 500;
       display: none;
       align-items: flex-end;
       justify-content: center;
       padding: 0;
+      backdrop-filter: blur(8px);
     }
 
     .modal-overlay.show { display: flex; }
 
     .modal-sheet {
-      background: var(--surface);
-      border-radius: 20px 20px 0 0;
+      background: var(--bg-2);
+      border-radius: 22px 22px 0 0;
+      border-top: 1px solid var(--border-2);
       width: 100%;
       max-width: 700px;
       max-height: 90vh;
       overflow-y: auto;
       padding: 20px;
-      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: slideUp 0.32s var(--ease-spring);
     }
+
+    .modal-sheet::-webkit-scrollbar { width: 4px; }
+    .modal-sheet::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 2px; }
 
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
     .modal-handle {
-      width: 40px;
+      width: 36px;
       height: 4px;
-      background: var(--border);
+      background: var(--surface-3);
       border-radius: 2px;
       margin: 0 auto 16px;
     }
 
     .modal-title {
       font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--navy);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-1);
       margin-bottom: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    /* Quick text items in modal */
     .qtext-item {
       display: flex;
       align-items: center;
       gap: 8px;
       padding: 10px 12px;
-      border-radius: 8px;
+      border-radius: 9px;
       border: 1.5px solid;
       margin-bottom: 7px;
       cursor: pointer;
       transition: all 0.15s;
     }
 
-    .qtext-item.pos { border-color: var(--positive-border); background: var(--positive-bg); }
-    .qtext-item.neg { border-color: var(--negative-border); background: var(--negative-bg); }
-    .qtext-item:hover { filter: brightness(0.95); }
+    .qtext-item.pos { border-color: rgba(0,212,170,0.3); background: var(--teal-dim); }
+    .qtext-item.neg { border-color: rgba(255,92,122,0.3); background: var(--red-dim); }
+    .qtext-item:hover { filter: brightness(1.1); }
 
     .qtext-text { flex: 1; font-size: 0.85rem; color: var(--text-1); }
 
     .qtext-edit-input {
       flex: 1;
-      border: 1.5px solid var(--border-focus);
-      border-radius: 6px;
+      border: 1.5px solid var(--accent);
+      border-radius: 7px;
       padding: 6px 10px;
       font-size: 0.85rem;
       font-family: var(--font);
+      background: var(--bg-3);
+      color: var(--text-1);
     }
 
-    .qtext-edit-input:focus { outline: none; }
+    .qtext-edit-input:focus { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
 
     /* =============================================
        REPORT PREVIEW
     ============================================= */
     .report-box {
-      background: var(--surface-3);
-      border: 1.5px solid var(--border);
+      background: var(--bg-3);
+      border: 1px solid var(--border-2);
       border-radius: var(--radius-sm);
       padding: 14px;
-      font-family: monospace;
-      font-size: 0.78rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
       white-space: pre-wrap;
       max-height: 320px;
       overflow-y: auto;
-      color: var(--text-1);
-      line-height: 1.6;
+      color: var(--teal);
+      line-height: 1.7;
       margin-top: 12px;
     }
 
@@ -918,11 +1042,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 12px;
-      background: var(--surface-3);
-      border-radius: 8px;
+      padding: 10px 13px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
       margin-bottom: 6px;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       font-weight: 600;
       color: var(--text-2);
     }
@@ -936,41 +1061,50 @@
       color: var(--text-3);
     }
 
-    .empty-state-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.5; }
-    .empty-state-text { font-size: 0.9rem; font-weight: 500; }
-    .empty-state-sub { font-size: 0.78rem; margin-top: 4px; }
+    .empty-state-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.4; }
+    .empty-state-text { font-size: 0.9rem; font-weight: 600; color: var(--text-2); }
+    .empty-state-sub { font-size: 0.75rem; margin-top: 5px; }
 
     /* =============================================
-       PAGE: INICIO (Dashboard)
+       PAGE: INICIO
     ============================================= */
     .welcome-card {
-      background: linear-gradient(135deg, var(--oxford) 0%, var(--navy) 60%, var(--blue) 100%);
-      color: white;
-      border-radius: var(--radius-lg);
-      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 22px;
       margin-bottom: 16px;
       position: relative;
       overflow: hidden;
     }
 
+    .welcome-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--teal), var(--amber));
+    }
+
     .welcome-card::after {
       content: '🎵';
       position: absolute;
-      right: -10px;
-      top: -10px;
-      font-size: 5rem;
-      opacity: 0.1;
+      right: -8px;
+      top: -8px;
+      font-size: 4.5rem;
+      opacity: 0.07;
       transform: rotate(-15deg);
     }
 
     .welcome-card-title {
       font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-size: 1.35rem;
+      font-weight: 800;
       margin-bottom: 4px;
+      color: var(--text-1);
     }
 
-    .welcome-card-sub { font-size: 0.8rem; opacity: 0.75; margin-bottom: 16px; }
+    .welcome-card-sub { font-size: 0.78rem; color: var(--text-3); margin-bottom: 16px; font-weight: 500; }
 
     .quick-action-grid {
       display: grid;
@@ -981,55 +1115,72 @@
 
     .quick-action-card {
       background: var(--surface);
-      border: 1.5px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 14px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 6px;
+      gap: 7px;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.18s var(--ease-spring);
       -webkit-tap-highlight-color: transparent;
+      position: relative;
+      overflow: hidden;
     }
 
-    .quick-action-card:active { transform: scale(0.97); border-color: var(--blue); }
+    .quick-action-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(108,99,255,0.06), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
 
-    .quick-action-icon { font-size: 1.6rem; }
+    .quick-action-card:active { 
+      transform: scale(0.96); 
+      border-color: var(--accent);
+    }
+
+    .quick-action-card:active::after { opacity: 1; }
+
+    .quick-action-icon { font-size: 1.7rem; }
 
     .quick-action-label {
       font-size: 0.8rem;
       font-weight: 700;
-      color: var(--navy);
+      color: var(--text-1);
       line-height: 1.2;
     }
 
-    .quick-action-sub { font-size: 0.7rem; color: var(--text-3); }
+    .quick-action-sub { font-size: 0.68rem; color: var(--text-3); }
 
     /* =============================================
-       INSTALL PROMPT BANNER
+       INSTALL BANNER
     ============================================= */
     #install-banner {
-      background: linear-gradient(135deg, #065f46, #059669);
-      color: white;
-      padding: 12px 16px;
+      background: linear-gradient(135deg, #0a2a1f, #0d3d2b);
+      border-bottom: 1px solid rgba(0,212,170,0.25);
+      color: var(--teal);
+      padding: 11px 16px;
       display: none;
       align-items: center;
       gap: 10px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
     }
 
     #install-banner.show { display: flex; }
-    #install-banner .ib-text { flex: 1; font-weight: 500; }
+    #install-banner .ib-text { flex: 1; font-weight: 600; }
     #install-banner .ib-btn {
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: white;
+      background: rgba(0,212,170,0.15);
+      border: 1px solid rgba(0,212,170,0.3);
+      color: var(--teal);
       padding: 6px 14px;
       border-radius: 20px;
       cursor: pointer;
-      font-size: 0.78rem;
-      font-weight: 600;
+      font-size: 0.75rem;
+      font-weight: 700;
       white-space: nowrap;
     }
   </style>
@@ -1165,7 +1316,7 @@
     <div class="card-body">
       <div class="alert alert-info">
         <span class="alert-icon">ℹ️</span>
-        <div>Esta app incluye <strong>464 estudiantes</strong> precargados de 2do a 6to de Secundaria.</div>
+        <div>Esta app incluye <strong>554 estudiantes</strong> precargados de 1ro a 6to de Secundaria.</div>
       </div>
       <div class="btn-group">
         <button class="btn btn-success" onclick="cargarEstudiantesManual()">⬇️ Cargar los 464</button>
@@ -1386,2787 +1537,3327 @@
         const estudiantesPrecargados = [
   {
     "id": 1,
-    "nombre": "Rojas Cristofher  Jheferson",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ACHACOLLO AGUILAR YABEL YERKO",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 2,
-    "nombre": "Albares Mendoza Alexis",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGUILAR QUISPE KAEL SANTIAGO",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 3,
-    "nombre": "Albares Mendoza William Denis",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALCON AZURDUY SEBASTIAN BRYAN",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 4,
-    "nombre": "Caballero Ramallo Maite Nataly",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ANDRADE CONDORI MAXIMILIANO GAEL",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 5,
-    "nombre": "Calderon Garcia William Andrey",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARIAS ALVARES ALEXANDRA NATALY",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 6,
-    "nombre": "Calle Cruz Nicolas Ariel",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CALANI MARCA HELEN",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 7,
-    "nombre": "Caller Ibaguari Edith",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CANDIA MAITA NELSON ISMAEL",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 8,
-    "nombre": "Carrillo Mejia Itzel Alejandra",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CANQUI COLQUE ISABELLA",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 9,
-    "nombre": "Castro Peñafiel Nicol Jhamileth",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHAOCA MOLLE SAMANTHA LORELEY",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 10,
-    "nombre": "Choconi Ventura Neymar Jacob",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHAVARRIA ARISPE MICHEL ADRIAN",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 11,
-    "nombre": "Claros Cari Nicolas Jhaziel",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE TERRAZAS NICOLAS DANIEL",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 12,
-    "nombre": "Claros Mamani Sofia Ines",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CONDORI FERNANDEZ ILSEN CECILIA",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 13,
-    "nombre": "Copa Mamani Thiago",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CRUZ CALIZAYA LEANDRO ALEXIS",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 14,
-    "nombre": "Cuarasi Mamani Rasiel Smith",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CUARACHI VILLA RODRIGO",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 15,
-    "nombre": "Delgadillo Colque Ryan Neymar",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ CANAVIRI AYLIN REBECA",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 16,
-    "nombre": "Gonzales Chambi Nicolas Daniel",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ICHUTA RODRIGUEZ AYHELEN CAMIL",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 17,
-    "nombre": "Huanca Mamani Treysi Jhudith",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JUYARI TUMIRI RODRIGO",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 18,
-    "nombre": "Jaillita Quispe Bryan Gadiel",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "KOYO RIVERA NADYR JOSUE",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 19,
-    "nombre": "Llampa Fernandez Elioth Gael",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MEDINA JULIAN ALEJANDRA CRIZETH",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 20,
-    "nombre": "Mamani Zuñiga Fernanda",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MELENDRES MONTAÑO MATIAS ALEJANDRO",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 21,
-    "nombre": "Ortuste Orellana Luciana Avril",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MENDOZA CONDORI ALEXIA MAYA",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 22,
-    "nombre": "Paredes Quisbert Alexia Constanza",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MERIDA MORALES SAUL",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 23,
-    "nombre": "Parra Garron Alba Madelen",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MIRANDA TINTAYA DARLA MISHEL",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 24,
-    "nombre": "Parrado Bustamante Santiago",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MITA AGUAYO JANETH ANDREA",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 25,
-    "nombre": "Pereyra Hosse Ghi Jose",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MOLINA MAMANI REBECA",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 26,
-    "nombre": "Pinto Rojas Andres Mateo",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PONCE AGUILAR KEVIN BRANDON",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 27,
-    "nombre": "Prada Poma Abigail",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "POQUECHOQUE HUAYTARI DEYMAR",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 28,
-    "nombre": "Puña Valencia Antonio Gabriel",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUIRA MARTINEZ JHONNY EMERSON",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 29,
-    "nombre": "Quispe Mariño Jhack Milan",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE ESCALERA ALINA KAREN",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 30,
-    "nombre": "Riera Goytia Megan Fernanda",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE CONDORI SEBASTIAN ABDON",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 31,
-    "nombre": "Rojas Bustamante Camila",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROMERO JAUREGUI CARLOS DALESSANDRO",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 32,
-    "nombre": "Romero Canedo Leandro Alejandro",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROMERO CANEDO RAFAELA MICAELA",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 33,
-    "nombre": "Romero Ramos Luis Adrian",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SOLIZ CORIA DREYKO",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 34,
-    "nombre": "Romero Salazar Saul Jheremy",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TOLA SOLANO SELENA",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 35,
-    "nombre": "Torrico Crespo Sebastian",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VARGAS QUINTANILLA ESTEFANY AYLIN",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 36,
-    "nombre": "Veizaga Solis Ainhoa Victoria",
-    "curso": "2do A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VASQUEZ MALDONADO ANDY NEHEMIAS",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 37,
-    "nombre": "Agne Cuiza Adrian Mauricio",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZEBALLOS LOPEZ LUCAS SANTIAGO",
+    "curso": "1ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 38,
-    "nombre": "Aguilar Morales Sara Belen",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGUILAR MOYA JHONATAN ANTONIO",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 39,
-    "nombre": "Alba Alvestegui Jhoana Ivette",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGUILAR MORALES NICOL MAYTE",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 40,
-    "nombre": "Aramayo Chinchilla Santiago",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARGANDOÑA MOYE PEDRO JESUS",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 41,
-    "nombre": "Argana Soliz Lucas Angel",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARISPE FERNANDEZ THIAGO MATIAS",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 42,
-    "nombre": "Ayala Crespo Santiago Aaron",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ATAHUICHI COCA MARIA ANGELES",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 43,
-    "nombre": "Castellon Mamani Tamaya",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AVAROMA SOMOZA AMANDA GISSEL",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 44,
-    "nombre": "Castellon Gonzales Demian Benjamin",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "BAUTISTA CONDORI BRAYAN",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 45,
-    "nombre": "Claure Garcia Wanner",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CALLISAYA VASQUEZ KEILA ARELI",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 46,
-    "nombre": "Clemente Martines Jhoselyn Mayda",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHUNGARA BALDIVIEZO DAVID ANDRES",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 47,
-    "nombre": "Contreras Gonzales Ian",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHUQUICHAMBI APAZA YULY JHUDIT",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 48,
-    "nombre": "Fernandez Flores Daniel Jose",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAROS MAMANI DAYANA MISHEL",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 49,
-    "nombre": "Gonzales Coria Emily Ariana",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "COLQUE MAMANI REBECA ALONDRA",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 50,
-    "nombre": "Gutierrez Alegre Favio Andre",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CRUZ COPALI LUZ BRITANY",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 51,
-    "nombre": "Gutierrez Gonzalo Liz Nicol",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FLORES ILLANES FRANZ THIAGO",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 52,
-    "nombre": "Lazarte Camacho Jhon Edwar",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GARCIA VARGAS STEFAN GUSTAF",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 53,
-    "nombre": "Loaiza Velasco Jhojan Fabioi",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GARCIA CUARASI ROSZELIN KAMILA",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 54,
-    "nombre": "Lopez Arispe Daniel",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GOMEZ SOSA JHOAN",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 55,
-    "nombre": "Mamani Sejas Tatiana Britani",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GONZALES ROCHA ERICK MANUEL",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 56,
-    "nombre": "Meriles Tola Michelle Amaya",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUZMAN GARCIA JAMES AARON",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 57,
-    "nombre": "Miranda Ponce Fernando  Caleb",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JALDIN VILLARROEL DARY",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 58,
-    "nombre": "Pacheco Velasco Alex Antoni",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LOPEZ ARCE ITAM JOSUE",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 59,
-    "nombre": "Pereira Loza Jose Antonio",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LUNA ARIAS DEYVID DANIEL",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 60,
-    "nombre": "Pozo Rojas Juan David",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MORALES FLORES DIANA AZUCENA",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 61,
-    "nombre": "Ramirez Castro Skaylor Tifanny",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PATIÑO CATALAN ROMINA VICTORIA",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 62,
-    "nombre": "Ramirez Quisbert Mikeyla",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREZ LUCARANI JAEL",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 63,
-    "nombre": "Ricaldez Sandoval Brissa Selene",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUIROZ CHOQUE HEIDY MAGDIEL",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 64,
-    "nombre": "Siles Quispe Camila Naomi",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE ALBORTA NATALIA",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 65,
-    "nombre": "Vargas Quintana Swami Ian",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE RODRIGUEZ JHULIANA ROSARIO",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 66,
-    "nombre": "Vargas Rodriguez Agustin Elian",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROCHA PACHECO ALESKA FRANCINY",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 67,
-    "nombre": "Villarroel Camaque Thais",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SANDOVAL BAZOALTO JARED GABRIEL",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 68,
-    "nombre": "Zeballos Miranda Nicole Ingrith",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TERAN IRAIPI MARIA",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 69,
-    "nombre": "Zurita Ferrufino Jose Marvin",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TINTAYA ALVAREZ JADEN LEANDRO",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 70,
-    "nombre": "Duran Colque Jose Miguel",
-    "curso": "2do B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TORRICO CRESPO JADE",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 71,
-    "nombre": "Gaspar Samuel",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TORRICO CRESPO MATIAS",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 72,
-    "nombre": "Alban Monzon Geraldine Madyson",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "UNZUETA CAERO RAFAELA ALEXIA",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 73,
-    "nombre": "Albares Zurita Rodrigo",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VILLAMOR LORAS JORGE ENRIQUE",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 74,
-    "nombre": "Challa Mendoza Adriana Nicol",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZEBALLOS ROCHA LUIS OSCAR",
+    "curso": "1ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 75,
-    "nombre": "Condori Berbetty Jazmin Sarai",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALVAREZ CASTELLON DAVID ANTHONY",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 76,
-    "nombre": "Cuba Olmedo Alexis Leonardo",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "APAZA DELGADILLO JOSE MARTIN",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 77,
-    "nombre": "Cusi Veisaga Josue Isaias",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "BARRIOS MIRANDA WILLIAM",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 78,
-    "nombre": "Equise Cordova Harold Luis",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "BOLIVAR MENDEZ LUCIANA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 79,
-    "nombre": "Fernandez Marpartida Pablo Maximiliano",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CALLISAYA TICONA CRISTIAN IAN",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 80,
-    "nombre": "Flores Alanes Diego David",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CAMARGO ARISPE ALEXIA CATALEYA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 81,
-    "nombre": "Flores Paco Snayder",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHAMBI PACHECO PEDRO MANUEL",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 82,
-    "nombre": "Franco Vega Thiago Rafael",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHUQUIMIA CORDERO ELIZABETH SELENA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 83,
-    "nombre": "Guarachi Fernandez Haziel Joel",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAURE MELGAREJO NEYMAR ANDER",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 84,
-    "nombre": "Gutierrez Canaviri Amilkar Mateo",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "COLQUE QUISPE DARLIN JHASMIN",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 85,
-    "nombre": "Luizaga Avila Benjamin Ramiro",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CORDOVA AYRA STEFANO",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 86,
-    "nombre": "Mamani Morales Fabiola",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FIGUEROA ZULETA MARIA LITZEL",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 87,
-    "nombre": "Mamani Silva Douglas Adan",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FLORES CALIZAYA ALEXIA GUADALUPE",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 88,
-    "nombre": "Pacari Mamani Andre Gilmar",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GANDARILLAS MOLINA PHEYTON CHARLOTTE",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 89,
-    "nombre": "Quispe Condori Lioma Libertad",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GARCIA JOANIQUINA GABRIEL",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 90,
-    "nombre": "Quispe Mariño Nyck Dylan",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GARCIA JIMENEZ JESUS GAEL",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 91,
-    "nombre": "Ramirez Arze Natanael",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ CACERES CAMILA ROXANA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 92,
-    "nombre": "Ricaldez Paredes Jhakelin Andrea",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HERBAS POMA CAMILA GENESIS",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 93,
-    "nombre": "Rodriguez Gutierrez Samuel Erick",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HURTADO GONZALES AGOSTINA ABRIL",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 94,
-    "nombre": "Romero Flores Juan Miguel",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JAILLITA REVOLLO LUCIANA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 95,
-    "nombre": "Sanchez Marzana Sheyla Britani",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LAZO CUBA ADRIANA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 96,
-    "nombre": "Solis Cuarasi Shadol Nicole",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAIRE YUJRA PEDRO JONAS JOSEPH",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 97,
-    "nombre": "Soliz Yave Erika",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI TITO YARITA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 98,
-    "nombre": "Ticona Surumi Fernanda",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI GUAYGUA SEBASTIAN JOSE",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 99,
-    "nombre": "Tordoya Quiroga Karim Francesc",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MANCILLA QUISPE SHEYLA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 100,
-    "nombre": "Uribe Villanueva Enrique Mtias",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MOLINA MAMANI ANABEL",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 101,
-    "nombre": "Yucra Ticona Zarlet Belen",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "NOGALES ORELLANA JUAN MATIAS",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 102,
-    "nombre": "Mejia Valencia Benjamin",
-    "curso": "2do C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PACARI MAMANI SCARLETH",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 103,
-    "nombre": "Albares Zurita Juan Diego",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PARDO ALA LINDSAY CATALEYA",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 104,
-    "nombre": "Caero Delgado Matias Diego",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PIEDRA CLAROS CRISTOFER RONALD",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 105,
-    "nombre": "Cespedes Guarena Jose Carlo",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SANCHEZ VELA FABRICIO ALEJANDRO",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 106,
-    "nombre": "Chile Alvarez Dylan",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VASQUEZ RAMOS MATIAS MIGUEL",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 107,
-    "nombre": "Choque Galvez Jimena Eliana",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VELASQUEZ RIOS VALERIA DAMARIS",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 108,
-    "nombre": "Claure Aranibar Mayara Jhasmin",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VIDOVIC PAREDES MILAGROS",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 109,
-    "nombre": "Coca Loza Keathon Leandro",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "YAVE ROLLANO MARIOLY",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 110,
-    "nombre": "Condori Cepeda Aaron Alexander",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZAMBRANA ZAMBRANA JHORDY",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 111,
-    "nombre": "Coria Jimenez Rosario Esmeralda",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZAPATA NOGALES JHAMIL MATIUS",
+    "curso": "1ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 112,
-    "nombre": "Phuru Maire Camila Jazmin",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALBARES MENDOZA ALEXIS",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 113,
-    "nombre": "Delgadillo Colque Ademar Samir",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CABALLERO RAMALLO MAITE NATALY",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 114,
-    "nombre": "Fernandez Flores Matias Carlos Andres",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CALDERON GARCIA WILLIAM ANDREY",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 115,
-    "nombre": "Gonzales Torrico Jhoselin Danna",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CALLE CRUZ NICOLAS ARIEL",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 116,
-    "nombre": "Ledezma Miranda Arabel Dagmar",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CALLER IBAGUARI EDITH",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 117,
-    "nombre": "Limachi Canaviri Jaci Isabel",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CARRILLO MEJIA ITZEL ALEJANDRA",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 118,
-    "nombre": "Luna Arias Samuel",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CASTRO PEÑAFIEL NICOL JHAMILETH",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 119,
-    "nombre": "Mamani Soliz Deymar Jonas",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOCONI VENTURA NEYMAR JACOB",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 120,
-    "nombre": "Melendres Montaño Angela Isabel",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAROS CARI NICOLAS JHAZIEL",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 121,
-    "nombre": "Morales Taboada Selena Katherin",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAROS MAMANI SOFIA INES",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 122,
-    "nombre": "Padilla Rojas Mikeyla Kimberly",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "COPA MAMANI THIAGO",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 123,
-    "nombre": "Patiño Chavez Diego Antonio",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "DELGADILLO COLQUE RYAN NEYMAR",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 124,
-    "nombre": "Patiño Cossio Valentina",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GONZALES CHAMBI NICOLAS DANIEL",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 125,
-    "nombre": "Pereyra Hosse Juan Santiago",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HUANCA MAMANI TREYSI JHUDITH",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 126,
-    "nombre": "Poma Villarpando Jair",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JAILLITA QUISPE BRYAN GADIEL",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 127,
-    "nombre": "Poquechoque Huaytari Andre Yihad",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LLAMPA FERNANDEZ ELIOTH GAEL",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 128,
-    "nombre": "Ramirez Claure Leslie Roxana",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI ZUÑIGA FERNANDA",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 129,
-    "nombre": "Rivero Acero Edgar Alan",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ORTUSTE ORELLANA LUCIANA AVRIL",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 130,
-    "nombre": "Rodriguez Mamani Kevin",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PAREDES QUISBERT ALEXIA CONSTANZA",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 131,
-    "nombre": "Rojas Bustamante Rosario",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PARRA GARRON ALBA MADELEN",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 132,
-    "nombre": "Romero Ramos Melisa",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PARRADO BUSTAMANTE SANTIAGO",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 133,
-    "nombre": "Romero Taborga Alan Luis",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREYRA HOSSE GHI JOSE",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 134,
-    "nombre": "Rueda Rodriguez Lilian Nathali",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PINTO ROJAS ANDRES MATEO",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 135,
-    "nombre": "Ugarte Choque Jessica",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PRADA POMA ABIGAIL",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 136,
-    "nombre": "Valda Alvarez Jose Ramiro",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PUÑA VALENCIA ANTONIO GABRIEL",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 137,
-    "nombre": "Villca Bernabel Ever Alexander",
-    "curso": "3Ro A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE MARIÑO JHACK MILAN",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 138,
-    "nombre": "Canaviri Angel Leonardo",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RIERA GOYTIA MEGAN FERNANDA",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 139,
-    "nombre": "Aguilar Colque Luz Mariana",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROJAS BUSTAMANTE CAMILA",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 140,
-    "nombre": "Aguilar Moya Camila Nicol",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROMERO CANEDO LEANDRO ALEJANDRO",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 141,
-    "nombre": "Almanza Huanca Emerson",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROMERO RAMOS LUIS ADRIAN",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 142,
-    "nombre": "Andia Apaza Jheremy Dilan",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROMERO SALAZAR SAUL JHEREMY",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 143,
-    "nombre": "Ayala Crespo Andres Ivan",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VEIZAGA SOLIS AINHOA VICTORIA",
+    "curso": "2do A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 144,
-    "nombre": "Barroso Romero Lucas",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGNE CUIZA ADRIAN MAURICIO",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 145,
-    "nombre": "Canaviri Vargas Sharon Melany",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGUILAR MORALES SARA BELEN",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 146,
-    "nombre": "Carballo Bustamante Jhoselyn Belen",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALBA ALVESTEGUI JHOANA IVETTE",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 147,
-    "nombre": "Franco Vega Alexandra Nieves",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARAMAYO CHINCHILLA SANTIAGO",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 148,
-    "nombre": "Garcia Gomez Dilan Neimar",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARGANA SOLIZ LUCAS ANGEL",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 149,
-    "nombre": "Gonzales Estrada Ivana Madai",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AYALA CRESPO SANTIAGO AARON",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 150,
-    "nombre": "Guzman Zepita Andruw",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CASTELLON MAMANI TAMAYA",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 151,
-    "nombre": "Herbas Atahuichi Erick Oliver",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAURE GARCIA WANNER",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 152,
-    "nombre": "Herrera Vidaurre Roberto",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLEMENTE MARTINES JHOSELYN MAYDA",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 153,
-    "nombre": "Ichuta Fernandez Reiner Jose",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CONTRERAS GONZALES IAN",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 154,
-    "nombre": "James Mareño Sebastian",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "DURAN COLQUE JOSE MIGUEL",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 155,
-    "nombre": "Lizarazu Mamani Ulises Samuel",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FERNANDEZ FLORES DANIEL JOSE",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 156,
-    "nombre": "Lopez Mamani Diana",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GONZALES CORIA EMILY ARIANA",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 157,
-    "nombre": "Luizaga Vega Leonardo Sebastian",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ ALEGRE FAVIO ANDRE",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 158,
-    "nombre": "Mamani Silva Brisa Indira",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ GONZALO LIZ NICOL",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 159,
-    "nombre": "Mendoza Pizaya Abdiaz Samuel",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LAZARTE CAMACHO JHON EDWAR",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 160,
-    "nombre": "Mendoza Condori Paola",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LOAIZA VELASCO JHOJAN FABIOI",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 161,
-    "nombre": "Padilla Marca Jhenifer Fernanda",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LOPEZ ARISPE DANIEL",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 162,
-    "nombre": "Perez Barrientos Elias",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI SEJAS TATIANA BRITANI",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 163,
-    "nombre": "Ramos Cepeda Ian Cristopher",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MERILES TOLA MICHELLE AMAYA",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 164,
-    "nombre": "Reynoso Herbas Camila",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MIRANDA PONCE FERNANDO  CALEB",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 165,
-    "nombre": "Riera Goytia Brizeida Vera",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PACHECO VELASCO ALEX ANTONI",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 166,
-    "nombre": "Salinas Charupa Ivonne Yomara",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREIRA LOZA JOSE ANTONIO",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 167,
-    "nombre": "Soliz Quiroga Mateo Leonel",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "POZO ROJAS JUAN DAVID",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 168,
-    "nombre": "Vargas Vasquez Andrea Natalia",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RAMIREZ CASTRO SKAYLOR TIFANNY",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 169,
-    "nombre": "Veizaga Guzman Kendrick Jhadyel",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RAMIREZ QUISBERT MIKEYLA",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 170,
-    "nombre": "Vela Rivera Brihana Brenda",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RICALDEZ SANDOVAL BRISSA SELENE",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 171,
-    "nombre": "Yave Rollano Charle Felix",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SILES QUISPE CAMILA NAOMI",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 172,
-    "nombre": "Camacho Mamani Angie Katlin",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TORRICO CRESPO SEBASTIAN",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 173,
-    "nombre": "Choque Tito Neymar Cristian",
-    "curso": "3Ro B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VARGAS QUINTANA SWAMI IAN",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 174,
-    "nombre": "Almendras Melgarejo Natalie Samanta",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VILLARROEL CAMAQUE THAIS",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 175,
-    "nombre": "Angulo Cerezo Dailin Areli",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZURITA FERRUFINO JOSE MARVIN",
+    "curso": "2do B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 176,
-    "nombre": "Angulo Mamani Jhon Elmer",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GASPAR SAMUEL",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 177,
-    "nombre": "Arauco Sardan Darlin Melody",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALBAN MONZON GERALDINE MADYSON",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 178,
-    "nombre": "Barrenechea Salazar Luis Fabricio",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALBARES ZURITA RODRIGO",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 179,
-    "nombre": "Canaviri Astete Nicolas",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHALLA MENDOZA ADRIANA NICOL",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 180,
-    "nombre": "Chavez Condori Ayelen Alwa",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CONDORI BERBETTY JAZMIN SARAI",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 181,
-    "nombre": "Choque Cabrera Victor",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CUBA OLMEDO ALEXIS LEONARDO",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 182,
-    "nombre": "Choque Condori Alison Massiel",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CUSI VEISAGA JOSUE ISAIAS",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 183,
-    "nombre": "Choque Gutierrez Xiomara Rubi",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "EQUISE CORDOVA HAROLD LUIS",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 184,
-    "nombre": "Corpus Hidalgo Alejandra",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FERNANDEZ MARPARTIDA PABLO MAXIMILIANO",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 185,
-    "nombre": "Gallardo Mendoza Camila Carla",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FLORES ALANES DIEGO DAVID",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 186,
-    "nombre": "Herbas Poma Darlin",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FLORES PACO SNAYDER",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 187,
-    "nombre": "Jaldin Villarroel Eiden Vladimir",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FRANCO VEGA THIAGO RAFAEL",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 188,
-    "nombre": "Marce Yave Carla",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUARACHI FERNANDEZ HAZIEL JOEL",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 189,
-    "nombre": "Morales Caricari Sarahi Brenely",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ CANAVIRI AMILKAR MATEO",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 190,
-    "nombre": "Morales Flores Rafael Aaron",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LUIZAGA AVILA BENJAMIN RAMIRO",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 191,
-    "nombre": "Orellana Santillan Valeria Fernanda",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI MORALES FABIOLA",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 192,
-    "nombre": "Orellana Villarroel Leonardo Emmeth",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI SILVA DOUGLAS ADAN",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 193,
-    "nombre": "Paredes Cossio Alejandro Gabriel",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MEJIA VALENCIA BENJAMIN",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 194,
-    "nombre": "Peredo Orihuela Andrea Heydi",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PACARI MAMANI ANDRE GILMAR",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 195,
-    "nombre": "Poquechoque Huaytari Anderson Yazid",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE CONDORI LIOMA LIBERTAD",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 196,
-    "nombre": "Quiroga Sejas Marco Augusto",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE MARIÑO NYCK DYLAN",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 197,
-    "nombre": "Ramos Fique Alex",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RAMIREZ ARZE NATANAEL",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 198,
-    "nombre": "Sanchez Romero Anahi Brenda",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RICALDEZ PAREDES JHAKELIN ANDREA",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 199,
-    "nombre": "Siles Quispe Mateo Eduardo",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RODRIGUEZ GUTIERREZ SAMUEL ERICK",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 200,
-    "nombre": "Soliz Quiroga Sai Sareth",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROMERO FLORES JUAN MIGUEL",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 201,
-    "nombre": "Soria Escobar Diego Armando",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SANCHEZ MARZANA SHEYLA BRITANI",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 202,
-    "nombre": "Toroya Yave Neymar",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SOLIZ YAVE ERIKA",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 203,
-    "nombre": "Vasquez Sanchez Axcel Adrian",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TICONA SURUMI FERNANDA",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 204,
-    "nombre": "Velarde Fernandez Miguel Angel",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TORDOYA QUIROGA KARIM FRANCESC",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 205,
-    "nombre": "Zuleta Lopez Luciana Emily",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "URIBE VILLANUEVA ENRIQUE MTIAS",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 206,
-    "nombre": "Mamani Reyes Darlin Gisel",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "YUCRA TICONA ZARLET BELEN",
+    "curso": "2do C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 207,
-    "nombre": "Sosa Pinto Alejandro",
-    "curso": "3Ro C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALBARES ZURITA JUAN DIEGO",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 208,
-    "nombre": "Perez Fatima Odaliz",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CAERO DELGADO MATIAS DIEGO",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 209,
-    "nombre": "Aliendre Condori Jose Carlos",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CESPEDES GUARENA JOSE CARLO",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 210,
-    "nombre": "Almanza Huanca Adriely",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHILE ALVAREZ DYLAN",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 211,
-    "nombre": "Casa Mamani Yamile",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE GALVEZ JIMENA ELIANA",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 212,
-    "nombre": "Cazorla Rivas Luis Fernando",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAURE ARANIBAR MAYARA JHASMIN",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 213,
-    "nombre": "Chambi Pacheco Tatiana",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "COCA LOZA KEATHON LEANDRO",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 214,
-    "nombre": "Choque Cruz Rihanna Jankarla",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CONDORI CEPEDA AARON ALEXANDER",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 215,
-    "nombre": "Chumbe Geronimo Daniela",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CORIA JIMENEZ ROSARIO ESMERALDA",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 216,
-    "nombre": "Claros Fernandez Brigith Estefany",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "DELGADILLO COLQUE ADEMAR SAMIR",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 217,
-    "nombre": "Condori Fernandez Adalid Diego",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FERNANDEZ FLORES MATIAS CARLOS ANDRES",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 218,
-    "nombre": "Condori Gallegos Kelvin Andres",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GONZALES TORRICO JHOSELIN DANNA",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 219,
-    "nombre": "Cutipa Tito Daysi",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JAMES MAREÑO SEBASTIAN",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 220,
-    "nombre": "Gutierrez Canaviri Ana Gabriela",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LEDEZMA MIRANDA ARABEL DAGMAR",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 221,
-    "nombre": "Juri Juscusiri Xadid",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LIMACHI CANAVIRI JACI ISABEL",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 222,
-    "nombre": "Lazo Alvarez Keity Sherlyn",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LUNA ARIAS SAMUEL",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 223,
-    "nombre": "Maire Alvares Alejandra Lucero",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI SOLIZ DEYMAR JONAS",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 224,
-    "nombre": "Mareño Sosa Alexis Manuel",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MELENDRES MONTAÑO ANGELA ISABEL",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 225,
-    "nombre": "Pacheco Velasco Nayeli Helen",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MORALES TABOADA SELENA KATHERIN",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 226,
-    "nombre": "Paredes Yauri Peython Rianna",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PADILLA ROJAS MIKEYLA KIMBERLY",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 227,
-    "nombre": "Parra Garron Jhonny Alejandro",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PATIÑO CHAVEZ DIEGO ANTONIO",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 228,
-    "nombre": "Quispe Aguilar Anahi Melani",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PATIÑO COSSIO VALENTINA",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 229,
-    "nombre": "Rivero Acero Jade Jasmin",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREYRA HOSSE JUAN SANTIAGO",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 230,
-    "nombre": "Rocha Vergara Melany Rosse",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "POMA VILLARPANDO JAIR",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 231,
-    "nombre": "Soliz Pedrazas Maic Armando",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "POQUECHOQUE HUAYTARI ANDRE YIHAD",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 232,
-    "nombre": "Soto Taquichiri Edward Anderson",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RAMIREZ CLAURE LESLIE ROXANA",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 233,
-    "nombre": "Taboada Poma Fabian",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RIVERO ACERO EDGAR ALAN",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 234,
-    "nombre": "Vela Maraza Fatima Abril",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RODRIGUEZ MAMANI KEVIN",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 235,
-    "nombre": "Velarde Montemayor Matias Garet",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROJAS BUSTAMANTE ROSARIO",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 236,
-    "nombre": "Yupanqui Ramos Emily Araceli",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROMERO RAMOS MELISA",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 237,
-    "nombre": "Zenteno Alanez Adhemar Dylan",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROMERO TABORGA ALAN LUIS",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 238,
-    "nombre": "Rios Morales Belinda",
-    "curso": "4to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RUEDA RODRIGUEZ LILIAN NATHALI",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 239,
-    "nombre": "Amonzabel Flores Camila Estefani",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "UGARTE CHOQUE JESSICA",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 240,
-    "nombre": "Arispe Aguilar Helen",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VALDA ALVAREZ JOSE RAMIRO",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 241,
-    "nombre": "Barrientos Mamani Brisa Betsabe",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VILLCA BERNABEL EVER ALEXANDER",
+    "curso": "3ro A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 242,
-    "nombre": "Bojorges Carvajal Nataly Zaleth",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CANAVIRI ANGEL LEONARDO",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 243,
-    "nombre": "Caballero Ramallo Mateo Alejandro",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGUILAR COLQUE LUZ MARIANA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 244,
-    "nombre": "Cabrera Laguna Fernanda Alejandra",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGUILAR MOYA CAMILA NICOL",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 245,
-    "nombre": "Choque Galvez Abiel",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALMANZA HUANCA EMERSON",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 246,
-    "nombre": "Condori Siles Samiel Antony",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ANDIA APAZA JHEREMY DILAN",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 247,
-    "nombre": "Garcia Cuarasi Jhon Jairo",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AYALA CRESPO ANDRES IVAN",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 248,
-    "nombre": "Garcia Villegas Sindel Desiree",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "BARROSO ROMERO LUCAS",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 249,
-    "nombre": "Geronimo Perez Karim Anthony",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CAMACHO MAMANI ANGIE KATLIN",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 250,
-    "nombre": "Gonzales Rocha Ruth Adelaida",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CANAVIRI VARGAS SHARON MELANY",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 251,
-    "nombre": "Jaillita Revollo Limbert",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CARBALLO BUSTAMANTE JHOSELYN BELEN",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 252,
-    "nombre": "Jimenez Berrios Jhojam Leandro",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE TITO NEYMAR CRISTIAN",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 253,
-    "nombre": "Limachi Canaviri Bruce Bryan",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "FRANCO VEGA ALEXANDRA NIEVES",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 254,
-    "nombre": "Lizarazu Mamani Ariana Pilar",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GARCIA GOMEZ DILAN NEIMAR",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 255,
-    "nombre": "Lora Acero Carlos Alfredo",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GONZALES ESTRADA IVANA MADAI",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 256,
-    "nombre": "Marza Aguilar Anthony Jose",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUZMAN ZEPITA ANDRUW",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 257,
-    "nombre": "Parrado Bustamante Mariana",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HERBAS ATAHUICHI ERICK OLIVER",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 258,
-    "nombre": "Pinto Rojas Nicolas Matias",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HERRERA VIDAURRE ROBERTO",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 259,
-    "nombre": "Ramirez Condori Jose Luis",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ICHUTA FERNANDEZ REINER JOSE",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 260,
-    "nombre": "Ramirez Alaniz Gabriel",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LIZARAZU MAMANI ULISES SAMUEL",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 261,
-    "nombre": "Sajama Paco Ruth Maya",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LOPEZ MAMANI DIANA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 262,
-    "nombre": "Terrazas Capriles Anel Cecilia",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LUIZAGA VEGA LEONARDO SEBASTIAN",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 263,
-    "nombre": "Toribio Teran Matias Cristian",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI SILVA BRISA INDIRA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 264,
-    "nombre": "Ugarte Vidaurre Leonardo",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MENDOZA PIZAYA ABDIAZ SAMUEL",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 265,
-    "nombre": "Vargas Jora Sofia",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MENDOZA CONDORI PAOLA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 266,
-    "nombre": "Vasquez Cuba Katerine Jade",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PADILLA MARCA JHENIFER FERNANDA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 267,
-    "nombre": "Villamor Loras Alisson Fabiana",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREZ BARRIENTOS ELIAS",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 268,
-    "nombre": "Zuleta Antezana Harold Sebastian",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RAMOS CEPEDA IAN CRISTOPHER",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 269,
-    "nombre": "Zuleta Lopez Jeremy Aaron",
-    "curso": "4to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "REYNOSO HERBAS CAMILA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 270,
-    "nombre": "Aguilar Aguilar Brittany Anahi",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RIERA GOYTIA BRIZEIDA VERA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 271,
-    "nombre": "Alban Monzon Isaac Ignacio",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SALINAS CHARUPA IVONNE YOMARA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 272,
-    "nombre": "Alcocer Campos Melani Melisa",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SOLIZ QUIROGA MATEO LEONEL",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 273,
-    "nombre": "Apaza Delgadillo Nathaniel Eliazer",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VARGAS VASQUEZ ANDREA NATALIA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 274,
-    "nombre": "Cabrera Umaña Diana Alexa",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VEIZAGA GUZMAN KENDRICK JHADYEL",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 275,
-    "nombre": "Calderon Manzel Aaron Neymar",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VELA RIVERA BRIHANA BRENDA",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 276,
-    "nombre": "Camacho Zambrana Liz Andrea",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "YAVE ROLLANO CHARLE FELIX",
+    "curso": "3ro B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 277,
-    "nombre": "Camargo Peca Jhosstin Anthuan",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ANGULO MAMANI JHON ELMER",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 278,
-    "nombre": "Carvajal Gabriel Heidy",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ANGULO CEREZO DAILIN ARELI",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 279,
-    "nombre": "Claros Carreño Rocio Wanda",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARAUCO SARDAN DARLIN MELODY",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 280,
-    "nombre": "Coyo Choque Alison Mayde",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "BARRENECHEA SALAZAR LUIS FABRICIO",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 281,
-    "nombre": "Gonzales Coria Gabriela Isabel",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CANAVIRI ASTETE NICOLAS",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 282,
-    "nombre": "Guarachi Fernandez Ruben Gabriel",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CESPEDES OLIVERA LISANDRO ANDRE",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 283,
-    "nombre": "Gutierrez Caceres Javier Limbert",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHAVEZ CONDORI AYELEN ALWA",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 284,
-    "nombre": "Huanca Cossio Jose David",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE CABRERA VICTOR",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 285,
-    "nombre": "Huanca Mamani Thiago Fernando",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE CONDORI ALISON MASSIEL",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 286,
-    "nombre": "Huarachi Yucra Ruth Alejandra",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE GUTIERREZ XIOMARA RUBI",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 287,
-    "nombre": "Lopez Gonzales Sarai",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CORPUS HIDALGO ALEJANDRA",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 288,
-    "nombre": "Magne Zuñiga Anderson",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GALLARDO MENDOZA CAMILA CARLA",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 289,
-    "nombre": "Orellana Montecinos Juan Roman",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HERBAS POMA DARLIN",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 290,
-    "nombre": "Ortega Carvallo Matias Edwin",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JALDIN VILLARROEL EIDEN VLADIMIR",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 291,
-    "nombre": "Paniagua Guzman Luciana",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI REYES DARLIN GISEL",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 292,
-    "nombre": "Peredo Pinto Santiago Jhunior",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MARCE YAVE CARLA",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 293,
-    "nombre": "Schmitter Ibaguari Tiago",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MORALES CARICARI SARAHI BRENELY",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 294,
-    "nombre": "Ticona Tordoya Daniela",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MORALES FLORES RAFAEL AARON",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 295,
-    "nombre": "Ticona Mallon Fabiola Isabel",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ORELLANA SANTILLAN VALERIA FERNANDA",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 296,
-    "nombre": "Toroya Yave Britney",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PAREDES COSSIO ALEJANDRO GABRIEL",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 297,
-    "nombre": "Ugarte Vidaurre Leonel",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREDO ORIHUELA ANDREA HEYDI",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 298,
-    "nombre": "Vargas Quintana Cristal Jazmin",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "POQUECHOQUE HUAYTARI ANDERSON YAZID",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 299,
-    "nombre": "Villca Viza Paul Lizandro",
-    "curso": "4to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUIROGA SEJAS MARCO AUGUSTO",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 300,
-    "nombre": "Agne Cuiza Nicolas Gabriel",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RAMOS FIQUE ALEX",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 301,
-    "nombre": "Aguilar Diaz Valerin",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SANCHEZ ROMERO ANAHI BRENDA",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 302,
-    "nombre": "Chavez Mariscal Josue Ezequiel",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SILES QUISPE MATEO EDUARDO",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 303,
-    "nombre": "Espinoza Delgado Derick Gabriel",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SOLIZ QUIROGA SAI SARETH",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 304,
-    "nombre": "Garcia Totola Mariana Jhazmin",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SOSA PINTO ALEJANDRO",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 305,
-    "nombre": "Gomez Sosa Helsy Samuel",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TOROYA YAVE NEYMAR",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 306,
-    "nombre": "Gutierrez Poma Katerin Alejandra",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VASQUEZ SANCHEZ AXCEL ADRIAN",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 307,
-    "nombre": "Huanca Flores Benjamin Americo",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VELARDE FERNANDEZ MIGUELANGEL",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 308,
-    "nombre": "Ichuta Fernandez Jhon Franco",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZULETA LOPEZ LUCIANA EMILY",
+    "curso": "3ro C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 309,
-    "nombre": "Lazo Alvarez Jhulieth America",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREZ FATIMA ODALIZ",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 310,
-    "nombre": "Llaveta Rojas Antony",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALIENDRE CONDORI JOSE CARLOS",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 311,
-    "nombre": "Lopez Choque Wilson",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALMANZA HUANCA ADRIELY",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 312,
-    "nombre": "Mamani Huaygua Samuel",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CASA MAMANI YAMILE",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 313,
-    "nombre": "Orellana Montecinos Jose Roman",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHAMBI PACHECO TATIANA",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 314,
-    "nombre": "Pereira Loza Jose Ignacio",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE CRUZ RIHANNA JANKARLA",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 315,
-    "nombre": "Perez Vargas Marian Camila",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHUMBE GERONIMO DANIELA",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 316,
-    "nombre": "Puña Valencia Lucero Fernanda",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAROS FERNANDEZ BRIGITH ESTEFANY",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 317,
-    "nombre": "Quispe Aguilar Marco Antonio",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CONDORI FERNANDEZ ADALID DIEGO",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 318,
-    "nombre": "Rios Morales Neyza",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CUTIPA TITO DAYSI",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 319,
-    "nombre": "Risueño Yujra Rony Ayme",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ CANAVIRI ANA GABRIELA",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 320,
-    "nombre": "Rojas Valdivia Derek David",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAIRE ALVARES ALEJANDRA LUCERO",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 321,
-    "nombre": "Sarabia Fernandez Marcos Gabriel",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAREÑO SOSA ALEXIS MANUEL",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 322,
-    "nombre": "Sarzusa Claros Vanessa",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PACHECO VELASCO NAYELI HELEN",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 323,
-    "nombre": "Soto Ortiz Jhamil",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PARRA GARRON JHONNY ALEJANDRO",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 324,
-    "nombre": "Susaño Flores Naike Rebeca",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE AGUILAR ANAHI MELANI",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 325,
-    "nombre": "Tapia Alanez Cesar Leonel",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RIOS MORALES BELINDA",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 326,
-    "nombre": "Teran Iraipi Juan Adon",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RIVERO ACERO JADE JASMIN",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 327,
-    "nombre": "Yujra Mamani Jhamil Santos",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROCHA VERGARA MELANY ROSSE",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 328,
-    "nombre": "Zapata Nogales Jhojan Santiago",
-    "curso": "5to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SOLIZ PEDRAZAS MAIC ARMANDO",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 329,
-    "nombre": "Aquino Azurduy Luis Fabian",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SOTO TAQUICHIRI EDWARD ANDERSON",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 330,
-    "nombre": "Arias Soto Jhann Nadal",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TABOADA POMA FABIAN",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 331,
-    "nombre": "Blas Huarita Juan Jose",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TORIBIO TERAN MATIAS CRISTIAN",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 332,
-    "nombre": "Candia Maita Masiel Tiffany",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VELA MARAZA FATIMA ABRIL",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 333,
-    "nombre": "Choque Condori Kiommy Stefani",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VELARDE MONTEMAYOR MATIAS GARET",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 334,
-    "nombre": "Colque Choque Maciel Tobias",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "YUPANQUI RAMOS EMILY ARACELI",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 335,
-    "nombre": "Condori Berbetty Carlos Mateo",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZENTENO ALANEZ ADHEMAR DYLAN",
+    "curso": "4to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 336,
-    "nombre": "Gutierrez Alegre Santiago Amilcar",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AMONZABEL FLORES CAMILA ESTEFANI",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 337,
-    "nombre": "Ledezma Miranda Britani Megan",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARISPE AGUILAR HELEN",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 338,
-    "nombre": "Mamani Canqui Naim Andres",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "BARRIENTOS MAMANI BRISA BETSABE",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 339,
-    "nombre": "Martinez Villarroel Mareck Neymar",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "BOJORGES CARVAJAL NATALY ZALETH",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 340,
-    "nombre": "Mico Diaz Luis",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CABALLERO RAMALLO MATEO ALEJANDRO",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 341,
-    "nombre": "Moreno Meneses Jheison",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CABRERA LAGUNA FERNANDA ALEJANDRA",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 342,
-    "nombre": "Orellana Villarroel Annais Andrea",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE GALVEZ ABIEL",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 343,
-    "nombre": "Ortuste Orellana Leonardo",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CONDORI SILES SAMIEL ANTONY",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 344,
-    "nombre": "Paredes Sanabria Stefany Mariel",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GARCIA CUARASI JHON JAIRO",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 345,
-    "nombre": "Perez Lugarani Sander",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GARCIA VILLEGAS SINDEL DESIREE",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 346,
-    "nombre": "Quintanilla Ramirez Anthony Emanuel",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GERONIMO PEREZ KARIM ANTHONY",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 347,
-    "nombre": "Quiroga Sejas Victoria Betenia",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GONZALES ROCHA RUTH ADELAIDA",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 348,
-    "nombre": "Roca Ibaguari Fernanda",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JAILLITA REVOLLO LIMBERT",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 349,
-    "nombre": "Rodriguez Rodriguez Adriana",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JIMENEZ BERRIOS JHOJAM LEANDRO",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 350,
-    "nombre": "Salinas Charupa Adriana Shelisa",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LIMACHI CANAVIRI BRUCE BRYAN",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 351,
-    "nombre": "Sanchez Almanza Berenice Ayllen",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LIZARAZU MAMANI ARIANA PILAR",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 352,
-    "nombre": "Siñaniz Almanza Fabio Alessandro",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LORA ACERO CARLOS ALFREDO",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 353,
-    "nombre": "Ustariz Chonono Alison",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MARZA AGUILAR ANTHONY JOSE",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 354,
-    "nombre": "Vasquez Choque Bond Jheimy",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PARRADO BUSTAMANTE MARIANA",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 355,
-    "nombre": "Zubieta Zenteno Maria Juana",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PINTO ROJAS NICOLAS MATIAS",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 356,
-    "nombre": "Cuellar Leaños Johana",
-    "curso": "5to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RAMIREZ ALANIZ GABRIEL",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 357,
-    "nombre": "Argana Soliz Luciana Monica",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SAJAMA PACO RUTH MAYA",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 358,
-    "nombre": "Camacho Zambrana Deborah Belen",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TERRAZAS CAPRILES ANEL CECILIA",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 359,
-    "nombre": "Choque Mendoza Alvaro",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "UGARTE VIDAURRE LEONARDO",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 360,
-    "nombre": "Chucamani Juyari Herlinda",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VARGAS JORA SOFIA",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 361,
-    "nombre": "Claros Torres Nicolas Mateo",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VASQUEZ CUBA KATERINE JADE",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 362,
-    "nombre": "Claure Aranibar Haziel Duzan",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VILLAMOR LORAS ALISSON FABIANA",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 363,
-    "nombre": "Cruz Calvi Sara Rosario",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZULETA ANTEZANA HAROLD SEBASTIAN",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 364,
-    "nombre": "Delgado Laura Miley Alexandra",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZULETA LOPEZ JEREMY AARON",
+    "curso": "4to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 365,
-    "nombre": "Gonzales Estrada Adriel Anghelo",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALBAN MONZON ISAAC IGNACIO",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 366,
-    "nombre": "Jarro Choque Vania Keisha",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ALCOCER CAMPOS MELANI MELISA",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 367,
-    "nombre": "Miranda Aguilar Jhael Jheyson",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "APAZA DELGADILLO NATHANIEL ELIAZER",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 368,
-    "nombre": "Patiño Catalan Santiago Leonel",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CABRERA UMAÑA DIANA ALEXA",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 369,
-    "nombre": "Peredo Silva Santiago",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CALDERON MANZEL AARON NEYMAR",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 370,
-    "nombre": "Poquechoque Choque Angheli Yumi",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CAMACHO ZAMBRANA LIZ ANDREA",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 371,
-    "nombre": "Postigo Cornejo Aneth Ruby",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CAMARGO PECA JHOSSTIN ANTHUAN",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 372,
-    "nombre": "Quispe Rodriguez Jhon Franco",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CARVAJAL GABRIEL HEIDY",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 373,
-    "nombre": "Ramos Fique Oliver",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAROS CARREÑO ROCIO WANDA",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 374,
-    "nombre": "Romay Apaza Jheyson Cliver",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "COYO CHOQUE ALISON MAYDE",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 375,
-    "nombre": "Romero Ramos Rebeca",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GONZALES CORIA GABRIELA ISABEL",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 376,
-    "nombre": "Romero Rondal Pablo Jose",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUARACHI FERNANDEZ RUBEN GABRIEL",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 377,
-    "nombre": "Sandoval Bazoalto Avril Asley",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ CACERES JAVIER LIMBERT",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 378,
-    "nombre": "Segovia Garcia Elioth",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HUANCA COSSIO JOSE DAVID",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 379,
-    "nombre": "Sullca Garcia Jhosep Jhadiel",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HUANCA MAMANI THIAGO FERNANDO",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 380,
-    "nombre": "Torrico Mercado Dylan Brian",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HUARACHI YUCRA RUTH ALEJANDRA",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 381,
-    "nombre": "Ugarte Vallejos Yassendy",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LOPEZ GONZALES SARAI",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 382,
-    "nombre": "Vargas Jora Paula",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAGNE ZUÑIGA ANDERSON",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 383,
-    "nombre": "Zambrana Espinoza Eduardo Liam",
-    "curso": "5toc",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ORELLANA MONTECINOS JUAN ROMAN",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 384,
-    "nombre": "Rojas Fernanda Jazmin",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ORTEGA CARVALLO MATIAS EDWIN",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 385,
-    "nombre": "Aguilar Tito Kevin",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PANIAGUA GUZMAN LUCIANA",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 386,
-    "nombre": "Chavez Fernandez Diego Israel",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREDO PINTO SANTIAGO JHUNIOR",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 387,
-    "nombre": "Claure Garcia Daira",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TICONA TORDOYA DANIELA",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 388,
-    "nombre": "Coca Loza Oliver Gael",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TICONA MALLON FABIOLA ISABEL",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 389,
-    "nombre": "Condorcota Chucamani Elmer",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TOROYA YAVE BRITNEY",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 390,
-    "nombre": "Copali Espinoza Osvaldo",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "UGARTE VIDAURRE LEONEL",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 391,
-    "nombre": "Cusicanqui Rada Leandro Mateo",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VARGAS QUINTANA CRISTAL JAZMIN",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 392,
-    "nombre": "Hinojosa Chambi Fabricio Alejandro",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VILLCA VIZA PAUL LIZANDRO",
+    "curso": "4to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 393,
-    "nombre": "Mamani Huaygua Helen Dhana",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGNE CUIZA NICOLAS GABRIEL",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 394,
-    "nombre": "Martinez Villarroel Nelya Odaymis Gabriela",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AGUILAR DIAZ VALERIN",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 395,
-    "nombre": "Mendoza Condori Jhoselin Luz",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHAVEZ MARISCAL JOSUE EZEQUIEL",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 396,
-    "nombre": "Molina Barrientos Nohelia Jerusalen",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ESPINOZA DELGADO DERICK GABRIEL",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 397,
-    "nombre": "Morales Flores Alain Nicolas",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GARCIA TOTOLA MARIANA JHAZMIN",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 398,
-    "nombre": "Paniagua Guzman Luis Miguel",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GOMEZ SOSA HELSY SAMUEL",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 399,
-    "nombre": "Piedra Claros Amy Kateryn",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ POMA KATERIN ALEJANDRA",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 400,
-    "nombre": "Ramirez Alaniz Daniel",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "HUANCA FLORES BENJAMIN AMERICO",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 401,
-    "nombre": "Ramos Cepeda Adriana",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ICHUTA FERNANDEZ JHON FRANCO",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 402,
-    "nombre": "Rios Morales Jhoselin",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LLAVETA ROJAS ANTONY",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 403,
-    "nombre": "Tapia Olivera Alejandro Omar",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LOPEZ CHOQUE WILSON",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 404,
-    "nombre": "Ticona Surumi Ruben",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI HUAYGUA SAMUEL",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 405,
-    "nombre": "Tola Solano Luis Mario",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ORELLANA MONTECINOS JOSE ROMAN",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 406,
-    "nombre": "Toribio Teran Adriana Anahi",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREIRA LOZA JOSE IGNACIO",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 407,
-    "nombre": "Vallejos Rosales Nareth",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREZ VARGAS MARIAN CAMILA",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 408,
-    "nombre": "Vargas Aguilar Herlan Abdiel",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PUÑA VALENCIA LUCERO FERNANDA",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 409,
-    "nombre": "Villca Vicente Victoria",
-    "curso": "6to A",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE AGUILAR MARCO ANTONIO",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 410,
-    "nombre": "Argandoña Moye Katherine Michelle",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RIOS MORALES NEYZA",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 411,
-    "nombre": "Benites Ojeda Nicolas Rolando",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RISUEÑO YUJRA RONY AYME",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 412,
-    "nombre": "Caceres Sandy Maiza",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROJAS VALDIVIA DEREK DAVID",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 413,
-    "nombre": "Castro Sanchez John Michael",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SARABIA FERNANDEZ MARCOS GABRIEL",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 414,
-    "nombre": "Cespedes Olivera Brenda Belen",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SARZUSA CLAROS VANESSA",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 415,
-    "nombre": "Challa Mendoza Michel Alejandra",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SOTO ORTIZ JHAMIL",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 416,
-    "nombre": "Claros Torres Guillermo Jimmy",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SUSAÑO FLORES NAIKE REBECA",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 417,
-    "nombre": "Colque Bravo Antony Agustin",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TAPIA ALANEZ CESAR LEONEL",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 418,
-    "nombre": "Colque Rodriguez Jhonatan",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "TERAN IRAIPI JUAN ADON",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 419,
-    "nombre": "Condori Chinchilla Felix",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "YUJRA MAMANI JHAMIL SANTOS",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 420,
-    "nombre": "Cuaquira Pinto Jefferson Kevin",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZAPATA NOGALES JHOJAN SANTIAGO",
+    "curso": "5to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 421,
-    "nombre": "Diaz Camacho Giorgia Valentina",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "AQUINO AZURDUY LUIS FABIAN",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 422,
-    "nombre": "Guarachi Poma Jose Armando",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARIAS SOTO JHANN NADAL",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 423,
-    "nombre": "Gutierrez Gonzalo Marisol",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "BLAS HUARITA JUAN JOSE",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 424,
-    "nombre": "Julio Enriquez Luis Miguel",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CANDIA MAITA MASIEL TIFFANY",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 425,
-    "nombre": "Mamani Soliz Cristhian Mathias",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE CONDORI KIOMMY STEFANI",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 426,
-    "nombre": "Marce Quimpe Fernando Javier",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "COLQUE CHOQUE MACIEL TOBIAS",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 427,
-    "nombre": "Miranda Patzi Bryanna Sabrina",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CONDORI BERBETTY CARLOS MATEO",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 428,
-    "nombre": "Mita Lima Catrin Heliana",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CUELLAR LEAÑOS JOHANA",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 429,
-    "nombre": "Pacheco Velasco Nereida Nicol",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GUTIERREZ ALEGRE SANTIAGO AMILCAR",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 430,
-    "nombre": "Quiroga Saavedra Camila",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "LEDEZMA MIRANDA BRITANI MEGAN",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 431,
-    "nombre": "Ramirez Claure Darleth",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MAMANI CANQUI NAIM ANDRES",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 432,
-    "nombre": "Sanchez Vela Noemi Fernanda",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MARTINEZ VILLARROEL MARECK NEYMAR",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 433,
-    "nombre": "Sandagorda Montaño Guadalupe",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MICO DIAZ LUIS",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 434,
-    "nombre": "Tapia Alanez Brandon Kael",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MORENO MENESES JHEISON",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 435,
-    "nombre": "Usieda Orihuela Sergio Israel",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ORTUSTE ORELLANA LEONARDO",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 436,
-    "nombre": "Villarroel Añez Dulce Nissai",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PAREDES SANABRIA STEFANY MARIEL",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 437,
-    "nombre": "Duran Quillca Darla Rebeca",
-    "curso": "6to B",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREZ LUGARANI SANDER",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 438,
-    "nombre": "Aguilar Aguilar Alexander",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUINTANILLA RAMIREZ ANTHONY EMANUEL",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 439,
-    "nombre": "Angulo Mamani Luis Fernando",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUIROGA SEJAS VICTORIA BETENIA",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 440,
-    "nombre": "Caceres Sandy Sara",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ROCA IBAGUARI FERNANDA",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 441,
-    "nombre": "Catari Lizarazu Josue Octavio",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RODRIGUEZ RODRIGUEZ ADRIANA",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 442,
-    "nombre": "Chambi Pacheco Santiago",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SALINAS CHARUPA ADRIANA SHELISA",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 443,
-    "nombre": "Chambi Parisaca Anthony Eduardo",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SANCHEZ ALMANZA BERENICE AYLLEN",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 444,
-    "nombre": "Chavarria Arispe Jhasmin Andrea",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "SIÑANIZ ALMANZA FABIO ALESSANDRO",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 445,
-    "nombre": "Chungara Baldiviezo Rafael",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "VASQUEZ CHOQUE BOND JHEIMY",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 446,
-    "nombre": "Colque Choque Dianelis Anahi",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ZUBIETA ZENTENO MARIA JUANA",
+    "curso": "5to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 447,
-    "nombre": "Condori Espejo Nahy",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "ARGANA SOLIZ LUCIANA MONICA",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 448,
-    "nombre": "Luna Chambi Jennifer",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CAMACHO ZAMBRANA DEBORAH BELEN",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 449,
-    "nombre": "Mamani Huaygua Abigail",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHOQUE MENDOZA ALVARO",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 450,
-    "nombre": "Mamani Ticona Ruth Alejandra",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CHUCAMANI JUYARI HERLINDA",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 451,
-    "nombre": "Marca Corani Cristian",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAROS TORRES NICOLAS MATEO",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 452,
-    "nombre": "Ortega Montaño Johan Christopher",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CLAURE ARANIBAR HAZIEL DUZAN",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 453,
-    "nombre": "Quispe Hinojosa Jhon Deyvis",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "CRUZ CALVI SARA ROSARIO",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 454,
-    "nombre": "Quispe Quispe Brenda Aracely",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "DELGADO LAURA MILEY ALEXANDRA",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 455,
-    "nombre": "Reynoso Herbas Nicol",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "GONZALES ESTRADA ADRIEL ANGHELO",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 456,
-    "nombre": "Teran Iraipi Jose Carlos",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "JARRO CHOQUE VANIA KEISHA",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 457,
-    "nombre": "Totola Puqui Leidy Solmayra",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "MIRANDA AGUILAR JHAEL JHEYSON",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 458,
-    "nombre": "Uluri Cori Genesis Esmeralda",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PATIÑO CATALAN SANTIAGO LEONEL",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 459,
-    "nombre": "Valdiviezo Mamani Sebastian Jens",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "PEREDO SILVA SANTIAGO",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 460,
-    "nombre": "Vela Maraza Noelia Mery",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "POQUECHOQUE CHOQUE ANGHELI YUMI",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 461,
-    "nombre": "Zuna Zeballos Elexander Fabian",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "POSTIGO CORNEJO ANETH RUBY",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 462,
-    "nombre": "Fernandez Quinteros Emily Gisel",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "QUISPE RODRIGUEZ JHON FRANCO",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 463,
-    "nombre": "Duran Quillca Darela Fernanda",
-    "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "nombre": "RAMOS FIQUE OLIVER",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   },
   {
     "id": 464,
-    "nombre": "Sajama Veizaga Angel Daniel",
+    "nombre": "ROMAY APAZA JHEYSON CLIVER",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 465,
+    "nombre": "ROMERO RAMOS REBECA",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 466,
+    "nombre": "ROMERO RONDAL PABLO JOSE",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 467,
+    "nombre": "SANDOVAL BAZOALTO AVRIL ASLEY",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 468,
+    "nombre": "SEGOVIA GARCIA ELIOTH",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 469,
+    "nombre": "SULLCA GARCIA JHOSEP JHADIEL",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 470,
+    "nombre": "TORRICO MERCADO DYLAN BRIAN",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 471,
+    "nombre": "UGARTE VALLEJOS YASSENDY",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 472,
+    "nombre": "VARGAS JORA PAULA",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 473,
+    "nombre": "ZAMBRANA ESPINOZA EDUARDO LIAM",
+    "curso": "5to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 474,
+    "nombre": "ROJAS FERNANDA JAZMIN",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 475,
+    "nombre": "AGUILAR TITO KEVIN",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 476,
+    "nombre": "CHAVEZ FERNANDEZ DIEGO ISRAEL",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 477,
+    "nombre": "CLAURE GARCIA DAIRA",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 478,
+    "nombre": "COCA LOZA OLIVER GAEL",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 479,
+    "nombre": "CONDORCOTA CHUCAMANI ELMER",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 480,
+    "nombre": "COPALI ESPINOZA OSVALDO",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 481,
+    "nombre": "CUSICANQUI RADA LEANDRO MATEO",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 482,
+    "nombre": "HINOJOSA CHAMBI FABRICIO ALEJANDRO",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 483,
+    "nombre": "MAMANI HUAYGUA HELEN DHANA",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 484,
+    "nombre": "MARTINEZ VILLARROEL NELYA ODAYMIS GABRIELA",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 485,
+    "nombre": "MENDOZA CONDORI JHOSELIN LUZ",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 486,
+    "nombre": "MOLINA BARRIENTOS NOHELIA JERUSALEN",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 487,
+    "nombre": "MORALES FLORES ALAIN NICOLAS",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 488,
+    "nombre": "PANIAGUA GUZMAN LUIS MIGUEL",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 489,
+    "nombre": "PIEDRA CLAROS AMY KATERYN",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 490,
+    "nombre": "QUISPE QUISPE BRENDA ARACELY",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 491,
+    "nombre": "RAMIREZ ALANIZ DANIEL",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 492,
+    "nombre": "RAMOS CEPEDA ADRIANA",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 493,
+    "nombre": "RIOS MORALES JHOSELIN",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 494,
+    "nombre": "TAPIA OLIVERA ALEJANDRO OMAR",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 495,
+    "nombre": "TICONA SURUMI RUBEN",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 496,
+    "nombre": "TOLA SOLANO LUIS MARIO",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 497,
+    "nombre": "TORIBIO TERAN ADRIANA ANAHI",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 498,
+    "nombre": "VALLEJOS ROSALES NARETH",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 499,
+    "nombre": "VARGAS AGUILAR HERLAN ABDIEL",
+    "curso": "6to A",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 500,
+    "nombre": "ARGANDOÑA MOYE KATHERINE MICHELLE",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 501,
+    "nombre": "BENITES OJEDA NICOLAS ROLANDO",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 502,
+    "nombre": "CACERES SANDY MAIZA",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 503,
+    "nombre": "CASTRO SANCHEZ JOHN MICHAEL",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 504,
+    "nombre": "CESPEDES OLIVERA BRENDA BELEN",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 505,
+    "nombre": "CHALLA MENDOZA MICHEL ALEJANDRA",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 506,
+    "nombre": "CLAROS TORRES GUILLERMO JIMMY",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 507,
+    "nombre": "COLQUE BRAVO ANTONY AGUSTIN",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 508,
+    "nombre": "COLQUE RODRIGUEZ JHONATAN",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 509,
+    "nombre": "CONDORI CHINCHILLA FELIX",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 510,
+    "nombre": "CUAQUIRA PINTO JEFFERSON KEVIN",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 511,
+    "nombre": "DIAZ CAMACHO GIORGIA VALENTINA",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 512,
+    "nombre": "DURAN QUILLCA DARLA REBECA",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 513,
+    "nombre": "GUARACHI POMA JOSE ARMANDO",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 514,
+    "nombre": "GUTIERREZ GONZALO MARISOL",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 515,
+    "nombre": "JULIO ENRIQUEZ LUIS MIGUEL",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 516,
+    "nombre": "MAMANI SOLIZ CRISTHIAN MATHIAS",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 517,
+    "nombre": "MARCE QUIMPE FERNANDO JAVIER",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 518,
+    "nombre": "MIRANDA PATZI BRYANNA SABRINA",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 519,
+    "nombre": "MITA LIMA CATRIN HELIANA",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 520,
+    "nombre": "PACHECO VELASCO NEREIDA NICOL",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 521,
+    "nombre": "QUIROGA SAAVEDRA CAMILA",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 522,
+    "nombre": "RAMIREZ CLAURE DARLETH",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 523,
+    "nombre": "SANCHEZ VELA NOEMI FERNANDA",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 524,
+    "nombre": "SANDAGORDA MONTAÑO GUADALUPE",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 525,
+    "nombre": "TAPIA ALANEZ BRANDON KAEL",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 526,
+    "nombre": "USIEDA ORIHUELA SERGIO ISRAEL",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 527,
+    "nombre": "VILLARROEL AÑEZ DULCE NISSAI",
+    "curso": "6to B",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 528,
+    "nombre": "AGUILAR AGUILAR ALEXANDER",
     "curso": "6to C",
-    "fechaRegistro": "2026-02-10T00:00:00.000Z"
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 529,
+    "nombre": "ANGULO MAMANI LUIS FERNANDO",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 530,
+    "nombre": "CACERES SANDY SARA",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 531,
+    "nombre": "CATARI LIZARAZU JOSUE OCTAVIO",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 532,
+    "nombre": "CHAMBI PACHECO SANTIAGO",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 533,
+    "nombre": "CHAMBI PARISACA ANTHONY EDUARDO",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 534,
+    "nombre": "CHAVARRIA ARISPE JHASMIN ANDREA",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 535,
+    "nombre": "CHUNGARA BALDIVIEZO RAFAEL",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 536,
+    "nombre": "COLQUE CHOQUE DIANELIS ANAHI",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 537,
+    "nombre": "CONDORI ESPEJO NAHY",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 538,
+    "nombre": "DURAN QUILLCA DARELA FERNANDA",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 539,
+    "nombre": "FERNANDEZ QUINTEROS EMILY GISEL",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 540,
+    "nombre": "LUNA CHAMBI JENNIFER",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 541,
+    "nombre": "MAMANI HUAYGUA ABIGAIL",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 542,
+    "nombre": "MAMANI TICONA RUTH ALEJANDRA",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 543,
+    "nombre": "MARCA CORANI CRISTIAN",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 544,
+    "nombre": "ORTEGA MONTAÑO JOHAN CHRISTOPHER",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 545,
+    "nombre": "PARRA CONDORI NURIA HANNA",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 546,
+    "nombre": "QUISPE HINOJOSA JHON DEYVIS",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 547,
+    "nombre": "REYNOSO HERBAS NICOL",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 548,
+    "nombre": "SAJAMA VEIZAGA ANGEL DANIEL",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 549,
+    "nombre": "TERAN IRAIPI JOSE CARLOS",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 550,
+    "nombre": "TOTOLA PUQUI LEIDY SOLMAYRA",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 551,
+    "nombre": "ULURI CORI GENESIS ESMERALDA",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 552,
+    "nombre": "VALDIVIEZO MAMANI SEBASTIAN JENS",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 553,
+    "nombre": "VELA MARAZA NOELIA MERY",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
+  },
+  {
+    "id": 554,
+    "nombre": "ZUNA ZEBALLOS ELEXANDER FABIAN",
+    "curso": "6to C",
+    "fechaRegistro": "2026-02-20T00:00:00.000Z"
   }
 ];
 
@@ -4555,7 +5246,7 @@ function eliminarEstudiante(id) {
 
 function cargarEstudiantesManual() {
   if (!estudiantesPrecargadosData.length) { toast('No hay datos precargados', '#d97706'); return; }
-  if (estudiantes.length > 0 && !confirm(`Ya tienes ${estudiantes.length} estudiantes. ¿Reemplazar con los 464 estudiantes?`)) return;
+  if (estudiantes.length > 0 && !confirm(`Ya tienes ${estudiantes.length} estudiantes. ¿Reemplazar con los 554 estudiantes?`)) return;
   estudiantes = JSON.parse(JSON.stringify(estudiantesPrecargadosData));
   localStorage.setItem('estudiantes_simple', JSON.stringify(estudiantes));
   renderEstudiantes();
@@ -4699,7 +5390,7 @@ function generarReporte() {
   }
 
   obs.sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
-  let txt = `📋 ${titulo}\nProf. Marcelo — Música — Unidad Educativa N.S. del Pilar\n${'═'.repeat(50)}\n\n`;
+  let txt = `📋 ${titulo}\nProf. Marcelo — Música — C.N.S. del Pilar\n${'═'.repeat(50)}\n\n`;
   txt += `Total observaciones: ${obs.length}\n\n`;
   
   const porEstudiante = {};
